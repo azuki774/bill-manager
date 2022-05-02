@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  api:
+    image: azuki774/bill-manager-api
+    container_name: bill-manager-api
+    restart: always
+
+  db:
+    image: azuki774/bill-manager-db
+    container_name: bill-manager-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD : billmanager
+
+  fetcher:
+    image: azuki774/bill-manager-fetcher
+    container_name: bill-manager-fetcher
+    restart: always
+
+  mawinter-client:
+    image: azuki774/bill-manager-mawinter
+    container_name: bill-manager-mawinter
+    restart: always
+
+  twitter-client:
+    image: azuki774/bill-manager-twitter
+    container_name: bill-manager-twitter
+    restart: always

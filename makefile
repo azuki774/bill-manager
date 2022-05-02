@@ -18,5 +18,11 @@ build:
 	docker build -t azuki774/bill-manager-mawinter -f build/dockerfile-mawinter .
 	docker build -t azuki774/bill-manager-twitter -f build/dockerfile-twitter .
 
+run:
+	docker-compose -f deploy/docker/docker-compose.yml up -d
+
+stop:
+	docker-compose -f deploy/docker/docker-compose.yml down
+
 clean:
 	rm -rf build/bin/*
