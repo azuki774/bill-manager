@@ -6,7 +6,7 @@ API_SRC=$(CURRENT_DIR)/cmd/bill-api
 MAWINTER_SRC=$(CURRENT_DIR)/cmd/bill-mawinter
 TWITTER_SRC=$(CURRENT_DIR)/cmd/bill-twitter
 
-.PHONY: build run clean stop
+.PHONY: build run clean stop proto-build
 build:
 	cd $(API_SRC) && CGO_ENABLED=0 go build -o $(BIN_DIR)/bill-manager-api
 	cd $(MAWINTER_SRC) && CGO_ENABLED=0 go build -o $(BIN_DIR)/bill-manager-mawinter
@@ -26,3 +26,7 @@ stop:
 
 clean:
 	rm -rf build/bin/*
+
+proto-build:
+	protoc --go_out=./internal/ --go_opt=module=github.com/azuki774/bill-manager --go-grpc_out=./internal/ --go-grpc_opt=module=github.com/azuki774/bill-manager ./proto/*.proto
+	python3 -m grpc_tools.protoc -I. --python_out=./fetcher/grpc --grpc_python_out=./fetcher/grpc ./proto/api.proto
