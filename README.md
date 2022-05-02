@@ -10,3 +10,4 @@
     - gRPC
     - Twitter API v2
     - 各種kubernetesリソース
+    - ORM
