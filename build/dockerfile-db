@@ -1,0 +1,2 @@
+FROM mariadb:10.7.3-focal
+LABEL description="bill-manager-db"

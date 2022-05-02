@@ -1,0 +1,3 @@
+FROM ghcr.io/azuki774/selenium-chrome:latest
+LABEL description="bill-manager-fetcher"
+COPY fetcher/ /src/

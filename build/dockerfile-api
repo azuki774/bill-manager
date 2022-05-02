@@ -1,0 +1,4 @@
+FROM alpine:3.15
+LABEL description="bill-manager-api"
+COPY build/bin/bill-manager-api /usr/local/bin/bill-manager-api
+ENTRYPOINT ["/usr/local/bin/bill-manager-api"]

@@ -1,0 +1,4 @@
+FROM alpine:3.15
+LABEL description="bill-manager-mawinter"
+COPY build/bin/bill-manager-mawinter /usr/local/bin/bill-manager-mawinter
+ENTRYPOINT ["/usr/local/bin/bill-manager-mawinter"]

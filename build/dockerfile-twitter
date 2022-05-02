@@ -1,0 +1,4 @@
+FROM alpine:3.15
+LABEL description="bill-manager-twitter"
+COPY build/bin/bill-manager-twitter /usr/local/bin/bill-manager-twitter
+ENTRYPOINT ["/usr/local/bin/bill-manager-twitter"]
