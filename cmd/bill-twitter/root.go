@@ -1,11 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"time"
 
+	twitter_client "github.com/azuki774/bill-manager/internal/twitter-client"
 	"github.com/spf13/cobra"
+	"go.uber.org/zap"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -21,9 +24,20 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("bill-twitter client start")
+		time.Sleep(5 * time.Second)
+
+		conn, err := grpc.Dial("bill-manager-api:9999", grpc.WithTransportCredentials(insecure.NewCredentials()))
+		defer conn.Close()
+		if err != nil {
+			logger.Error("can not make grpc-connection error", zap.Error(err))
+			return err
+		}
+
+		twitter_client.MakeGrpcClient(conn)
+		logger.Info("make grpc-connection and client")
+
 		for {
-			time.Sleep(10 * time.Second)
+			time.Sleep(1 * time.Second)
 		}
 	},
 }

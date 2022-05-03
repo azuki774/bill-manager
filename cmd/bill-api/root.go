@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"os"
-	"time"
 
+	"github.com/azuki774/bill-manager/internal/api"
 	"github.com/spf13/cobra"
 )
 
@@ -21,10 +20,7 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("api start")
-		for {
-			time.Sleep(10 * time.Second)
-		}
+		return api.Start()
 	},
 }
 

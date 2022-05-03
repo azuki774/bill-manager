@@ -28,5 +28,5 @@ clean:
 	rm -rf build/bin/*
 
 proto-build:
-	protoc --go_out=./internal/ --go_opt=module=github.com/azuki774/bill-manager --go-grpc_out=./internal/ --go-grpc_opt=module=github.com/azuki774/bill-manager ./proto/*.proto
-	python3 -m grpc_tools.protoc -I. --python_out=./fetcher/grpc --grpc_python_out=./fetcher/grpc ./proto/api.proto
+	protoc --go_out=. --go_opt=module=github.com/azuki774/bill-manager --go-grpc_out=. --go-grpc_opt=module=github.com/azuki774/bill-manager ./proto/*.proto
+	python3 -m grpc_tools.protoc -I. --python_out=./fetcher/ --grpc_python_out=./fetcher/ ./proto/api.proto
