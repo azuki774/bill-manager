@@ -12,6 +12,10 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD : billmanager
+      MYSQL_HOST: bill-manager-db
+      MYSQL_DATABASE: BILLMANAGER
+      TZ: Asia/Tokyo
+      LANG: C.UTF-8
 
   fetcher:
     image: azuki774/bill-manager-fetcher
@@ -33,4 +37,3 @@ services:
     - tw-token.env
     environment:
     - twitter_stub=1 # 0 .. send to Twitter, 1 .. for development (not send actually)
-

@@ -16,3 +16,4 @@ MariaDB [BILLMANAGER]> show columns from elect_consume;
 | total       | int(11) | YES  |     | NULL                |                |
 +-------------+---------+------+-----+---------------------+----------------+
 ```
+- ただし、record_date として、同じ日付に２つのレコードを登録しない。
