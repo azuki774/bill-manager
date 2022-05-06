@@ -11,9 +11,12 @@ class grpcClient:
     def close(self):
         self.channel.close()
 
-    def ElectConsumePost(self):
-        req = OnedayElectConsume(daytime=1.0, nighttime=2.0, total=3.0)
-        print("send")
+    def ElectConsumePost(self, dateStruct, daytime, nighttime, total):
+        req = OnedayElectConsume(
+            date=dateStruct, daytime=daytime, nighttime=nighttime, total=total
+        )
+        print("send + #" + str(dateStruct.day))
+
         try:
             res = self.stub.ElectConsumePost(req)
         except grpc.RpcError as e:
