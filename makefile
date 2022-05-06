@@ -5,7 +5,7 @@ BIN_DIR=$(BUILD_DIR)/bin
 API_SRC=$(CURRENT_DIR)/cmd/bill-api
 MAWINTER_SRC=$(CURRENT_DIR)/cmd/bill-mawinter
 
-.PHONY: build run clean stop proto-build
+.PHONY: build run clean stop proto-build rebuild
 build:
 	cd $(API_SRC) && CGO_ENABLED=0 go build -o $(BIN_DIR)/bill-manager-api
 	cd $(MAWINTER_SRC) && CGO_ENABLED=0 go build -o $(BIN_DIR)/bill-manager-mawinter
@@ -29,3 +29,6 @@ proto-build:
 	protoc --go_out=. --go_opt=module=github.com/azuki774/bill-manager --go-grpc_out=. --go-grpc_opt=module=github.com/azuki774/bill-manager ./proto/*.proto
 	python3 -m grpc_tools.protoc -I. --python_out=./fetcher/ --grpc_python_out=./fetcher/ ./proto/api.proto
 	cp -rf fetcher/proto twclient/proto
+
+rebuild:
+	make stop && make clean && make && make run
