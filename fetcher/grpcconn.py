@@ -15,7 +15,7 @@ class grpcClient:
         req = OnedayElectConsume(
             date=dateStruct, daytime=daytime, nighttime=nighttime, total=total
         )
-        print("send + #" + str(dateStruct.day))
+        print("send #" + str(dateStruct.day))
 
         try:
             res = self.stub.ElectConsumePost(req)

@@ -96,7 +96,7 @@ def get_targetDay():
 
 def make_postdata(fetch_data):
     ret_data = []
-    # [1, 2.0, 3.0] -> [DataStruct(year=2022,month=1,day=1), 2.0, 3.0, 5.0]
+    # [1, 2.0, 3.0] -> [DataStruct(year=2022,month=1,day=1), 2000, 3000, 5000] kWh -> Wh
     for data in fetch_data:
         datastruct = get_targetDay()
         datastruct.day = data[0]  # 日のみ今から送信する日に上書き
@@ -105,9 +105,9 @@ def make_postdata(fetch_data):
         ret_data.append(
             [
                 datastruct,
-                round(data[1], 2),
-                round(data[2], 2),
-                round(data[1] + data[2], 2),
+                int(round(data[1] * 1000)),
+                int(round(data[2] * 1000)),
+                int(round(data[1] * 1000)) + int(round(data[2] * 1000)),
             ]
         )
 

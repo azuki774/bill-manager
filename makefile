@@ -28,7 +28,7 @@ clean:
 proto-build:
 	protoc --go_out=. --go_opt=module=github.com/azuki774/bill-manager --go-grpc_out=. --go-grpc_opt=module=github.com/azuki774/bill-manager ./proto/*.proto
 	python3 -m grpc_tools.protoc -I. --python_out=./fetcher/ --grpc_python_out=./fetcher/ ./proto/api.proto
-	cp -rf fetcher/proto twclient/proto
+	cp -rf fetcher/proto twclient/
 
 rebuild:
 	make stop && make clean && make && make run

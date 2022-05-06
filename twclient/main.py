@@ -22,9 +22,9 @@ def makeTweetText(daytime, nighttime, total):
     text = ""
     text += "@azuki774s\n"
     text += yesterdayString + " の電力消費量は\n"
-    text += "昼間:" + str(daytime) + " kWh\n"
-    text += "夜間:" + str(nighttime) + " kWh\n"
-    text += "合計:" + str(total) + " kWh\n"
+    text += "昼間:" + str(daytime) + " Wh\n"
+    text += "夜間:" + str(nighttime) + " Wh\n"
+    text += "合計:" + str(total) + " Wh\n"
     return text
 
 

@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z1github.com/azuki774/bill-manager/internal/grpcapi',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0fproto/api.proto\x12\x0e\x62illManagerAPI\x1a\x1bgoogle/protobuf/empty.proto\"q\n\x12OnedayElectConsume\x12(\n\x04\x64\x61te\x18\x01 \x01(\x0b\x32\x1a.billManagerAPI.DateStruct\x12\x0f\n\x07\x64\x61ytime\x18\x02 \x01(\x02\x12\x11\n\tnighttime\x18\x03 \x01(\x02\x12\r\n\x05total\x18\x04 \x01(\x02\"6\n\nDateStruct\x12\x0c\n\x04year\x18\x01 \x01(\x05\x12\r\n\x05month\x18\x02 \x01(\x05\x12\x0b\n\x03\x64\x61y\x18\x03 \x01(\x05\x32\xb8\x01\n\x13\x45lectConsumeService\x12N\n\x10\x45lectConsumePost\x12\".billManagerAPI.OnedayElectConsume\x1a\x16.google.protobuf.Empty\x12Q\n\x0f\x45lectConsumeGet\x12\x1a.billManagerAPI.DateStruct\x1a\".billManagerAPI.OnedayElectConsumeB3Z1github.com/azuki774/bill-manager/internal/grpcapib\x06proto3'
+  serialized_pb=b'\n\x0fproto/api.proto\x12\x0e\x62illManagerAPI\x1a\x1bgoogle/protobuf/empty.proto\"q\n\x12OnedayElectConsume\x12(\n\x04\x64\x61te\x18\x01 \x01(\x0b\x32\x1a.billManagerAPI.DateStruct\x12\x0f\n\x07\x64\x61ytime\x18\x02 \x01(\x03\x12\x11\n\tnighttime\x18\x03 \x01(\x03\x12\r\n\x05total\x18\x04 \x01(\x03\"6\n\nDateStruct\x12\x0c\n\x04year\x18\x01 \x01(\x05\x12\r\n\x05month\x18\x02 \x01(\x05\x12\x0b\n\x03\x64\x61y\x18\x03 \x01(\x05\x32\xb8\x01\n\x13\x45lectConsumeService\x12N\n\x10\x45lectConsumePost\x12\".billManagerAPI.OnedayElectConsume\x1a\x16.google.protobuf.Empty\x12Q\n\x0f\x45lectConsumeGet\x12\x1a.billManagerAPI.DateStruct\x1a\".billManagerAPI.OnedayElectConsumeB3Z1github.com/azuki774/bill-manager/internal/grpcapib\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -44,22 +44,22 @@ _ONEDAYELECTCONSUME = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='daytime', full_name='billManagerAPI.OnedayElectConsume.daytime', index=1,
-      number=2, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      number=2, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='nighttime', full_name='billManagerAPI.OnedayElectConsume.nighttime', index=2,
-      number=3, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      number=3, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='total', full_name='billManagerAPI.OnedayElectConsume.total', index=3,
-      number=4, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      number=4, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
