@@ -1,9 +1,5 @@
 from curses import raw
-import re
 import time
-import json
-import datetime
-import os
 import driver
 from venv import create
 from selenium import webdriver

@@ -1,4 +1,5 @@
-FROM alpine:3.15
+FROM python:alpine
 LABEL description="bill-manager-twitter"
-COPY build/bin/bill-manager-twitter /usr/local/bin/bill-manager-twitter
-ENTRYPOINT ["/usr/local/bin/bill-manager-twitter"]
+RUN python -m pip install --upgrade pip && python -m pip install tweepy && python -m pip install grpcio && python -m pip install protobuf
+COPY twclient/ /src/
+ENTRYPOINT ["python3", "-u", "/src/main.py"]

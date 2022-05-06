@@ -27,3 +27,8 @@ services:
     image: azuki774/bill-manager-twitter
     container_name: bill-manager-twitter
     restart: always
+    env_file:
+    - tw-token.env
+    environment:
+    - twitter_stub=1 # 0 .. send to Twitter, 1 .. for development (not send actually)
+
