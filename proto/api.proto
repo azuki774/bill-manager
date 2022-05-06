@@ -12,9 +12,9 @@ service ElectConsumeService {
 
 message OnedayElectConsume {
     DateStruct date = 1;
-    float daytime = 2;
-    float nighttime = 3;
-    float total = 4;
+    int64 daytime = 2;
+    int64 nighttime = 3;
+    int64 total = 4;
 }
 
 message DateStruct {

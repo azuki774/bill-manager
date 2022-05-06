@@ -13,26 +13,26 @@ import remix
 
 if __name__ == "__main__":
     print("fetcher start")
-    time.sleep(10)
+
+    # Run Driver
+    driver = driver.get_driver()
+    driver.implicitly_wait(10)
+    print("Get driver")
+
+    remix.login(driver)
+    remix_fetch_data = remix.fetch_now_month(driver)
+    post_data = remix.make_postdata(remix_fetch_data)
+    print(post_data)
     conn = grpcconn.grpcClient()
     conn.open()
     print("grpc connected")
-    conn.ElectConsumePost()
+
+    for data in post_data:
+        conn.ElectConsumePost(data[0], data[1], data[2], data[3])
+
     conn.close()
     print("grpc closed")
-    # print('Program start')
-    # # Run Driver
-    # driver = driver.get_driver()
-    # driver.implicitly_wait(10)
-    # print('Get driver')
 
-    # print("------------------")
-
-    # remix.login(driver)
-    # remix.fetch_now_month(driver)
-
-    # # Close browser
-    # driver.quit()
-    # print("------------------")
-
-    # print('Program end')
+    print("the program will end after 1 minutes")
+    time.sleep(60)  # 1min sleep for blocking
+    print("the program end")

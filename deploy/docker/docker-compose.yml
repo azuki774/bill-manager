@@ -17,6 +17,8 @@ services:
     image: azuki774/bill-manager-fetcher
     container_name: bill-manager-fetcher
     restart: always
+    env_file:
+    - fetcher-token.env
 
   mawinter-client:
     image: azuki774/bill-manager-mawinter

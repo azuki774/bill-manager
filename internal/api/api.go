@@ -12,7 +12,7 @@ type server struct {
 }
 
 func (s *server) ElectConsumePost(ctx context.Context, in *pb.OnedayElectConsume) (*empty.Empty, error) {
-	logger.Infow("receive data", "api", "ElectConsumePost")
+	logger.Infow("receive data", "api", "ElectConsumePost", "data", in)
 	return &empty.Empty{}, nil
 }
 
