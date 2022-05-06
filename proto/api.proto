@@ -2,28 +2,22 @@ syntax = "proto3";
 
 package billManagerAPI;
 
-option go_package = "github.com/azuki774/bill-manager/grpc";
+option go_package = "github.com/azuki774/bill-manager/internal/grpcapi";
 import "google/protobuf/empty.proto";
 
-service electConsumePost {
-    rpc electConsume (electConsumeData) returns (google.protobuf.Empty);
+service ElectConsumeService {
+    rpc ElectConsumePost (OnedayElectConsume) returns (google.protobuf.Empty);
+    rpc ElectConsumeGet (DateStruct) returns (OnedayElectConsume);
 }
 
-service electConsumeGet {
-    rpc electConsume (Date) returns (onedayElectConsume);
+message OnedayElectConsume {
+    DateStruct date = 1;
+    float daytime = 2;
+    float nighttime = 3;
+    float total = 4;
 }
 
-message onedayElectConsume {
-    float daytime = 1;
-    float nighttime = 2;
-    float total = 3;
-}
-
-message electConsumeData {
-    repeated onedayElectConsume postRecords = 1;
-}
-
-message Date {
+message DateStruct {
     int32 year = 1;
     int32 month = 2;
     int32 day = 3;
