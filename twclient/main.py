@@ -18,7 +18,7 @@ def getClient():
 def makeTweetText(daytime, nighttime, total):
     today = datetime.now()
     yesterday = today - timedelta(1)
-    yesterdayString = yesterday.strftime("%Y-%d-%m")
+    yesterdayString = yesterday.strftime("%Y-%m-%d")
     text = ""
     text += "@azuki774s\n"
     text += yesterdayString + " の電力消費量は\n"
@@ -40,13 +40,6 @@ if __name__ == "__main__":
     print("grpc connected")
     res = conn.ElectConsumeGet()
     conn.close()
-
-    print("get enviroment value")
-    # print(os.environ["consumer_key"])
-    # print(os.environ["consumer_secret"])
-    # print(os.environ["access_token"])
-    # print(os.environ["access_token_secret"])
-    # print(os.getenv("twitter_stub"))
 
     print("make tweetText")
     tweetText = makeTweetText(res.daytime, res.nighttime, res.total)

@@ -11,9 +11,8 @@ var logger *zap.SugaredLogger
 
 func main() {
 	config := zap.NewProductionConfig()
-	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel) //出力するログレベルをDebugレベルに変更
+	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel) // Change to DebugLevel
 	lg, _ := config.Build()
-	// lg, _ := zap.NewProduction()
 	defer lg.Sync() // flushes buffer, if any
 	logger = lg.Sugar()
 	api.LoadConf(logger)
