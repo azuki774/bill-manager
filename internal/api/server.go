@@ -38,6 +38,9 @@ func Start() (err error) {
 	logger.Info("grpc server start")
 	reflection.Register(s)
 
+	dbR = db.NewElectConsumeDBRepository(dbconn)
+	apis = NewRemixapiService(dbR)
+
 	if err := s.Serve(lis); err != nil {
 		logger.Infow("grpc server end", "error", err)
 		return err
@@ -52,8 +55,14 @@ func (s *server) ElectConsumePost(ctx context.Context, in *pb.OnedayElectConsume
 	return &empty.Empty{}, nil
 }
 
-func (e *server) ElectConsumeGet(context.Context, *pb.DateStruct) (*pb.OnedayElectConsume, error) {
+func (s *server) ElectConsumeGet(ctx context.Context, in *pb.DateStruct) (*pb.OnedayElectConsume, error) {
 	logger.Infow("receive data", "api", "ElectConsumeGet")
-	retData := pb.OnedayElectConsume{Daytime: 1, Nighttime: 2, Total: 3}
+
+	t := time.Date(int(in.Year), time.Month(int(in.Month)), int(in.Day), 0, 0, 0, 0, time.Now().Location())
+	record, err := apis.GetElectConsume(t)
+	if err != nil {
+		logger.Error("error", err)
+	}
+	retData := pb.OnedayElectConsume{Daytime: record.Daytime, Nighttime: record.Nighttime, Total: record.Total}
 	return &retData, nil
 }

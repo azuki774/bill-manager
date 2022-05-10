@@ -6,4 +6,5 @@ var (
 	ErrRecordAlreadyExists = errors.New("this record is already recorded")
 	ErrInternal            = errors.New("internal error")
 	ErrConditionMismatch   = errors.New("database condition mismatch")
+	ErrNotFound            = errors.New("data not found")
 )

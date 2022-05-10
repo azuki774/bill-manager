@@ -1,6 +1,7 @@
 package db_ope
 
 import (
+	"errors"
 	"time"
 
 	"go.uber.org/zap"
@@ -20,12 +21,12 @@ type ElectConsume struct {
 type ElectConsumeDBRepository interface {
 	OpenTx() *gorm.DB
 	CloseTx(tx *gorm.DB, err error) error
-	GetElectConsume(tx *gorm.DB, t time.Time) (record ElectConsume, err error)
-	PostElectConsume(tx *gorm.DB, record ElectConsume) (err error)
+	GetElectConsume(tx *gorm.DB, t time.Time) (record ElectConsume, err error) // SELECT * FROM `elect_consumes` WHERE record_date BETWEEN '2000-10-01 00:00:00' AND '2000-10-01 23:59:59';
+	PostElectConsume(tx *gorm.DB, record ElectConsume) (err error)             // INSERT INTO `elect_consumes` (`Record_date`,`Daytime`,`Nighttime`,`Total`) VALUES ("2000-10-01", 111, 222, 333);
 	mustEmbedUnimplementedElectConsumeDBRepository()
 }
 
-type electConsumeDBRepository struct {
+type ElectConsumeDBRrepo struct {
 	conn *gorm.DB
 	UnimplementedElectConsumeDBRepository
 }
@@ -55,21 +56,34 @@ type UnsafeElectConsumeDBRepository interface {
 	mustEmbedUnimplementedElectConsumeDBRepository()
 }
 
-func NewDBRepository(conn *gorm.DB) ElectConsumeDBRepository {
-	return &electConsumeDBRepository{conn: conn}
+func NewElectConsumeDBRepository(conn *gorm.DB) ElectConsumeDBRepository {
+	return &ElectConsumeDBRrepo{conn: conn}
 }
 
-func (ecdbR *electConsumeDBRepository) OpenTx() *gorm.DB {
-	tx := ecdbR.conn.Begin()
+func (dbR *ElectConsumeDBRrepo) OpenTx() *gorm.DB {
+	tx := dbR.conn.Begin()
 	return tx
 }
 
-func (ecdbR *electConsumeDBRepository) CloseTx(tx *gorm.DB, err error) error {
+func (dbR *ElectConsumeDBRrepo) CloseTx(tx *gorm.DB, err error) error {
 	if err != nil {
-		logger.Error("CloseTx (Rollback): %s", zap.Error(err))
+		logger.Errorw("CloseTx (Rollback)", "error", zap.Error(err))
 		tx.Rollback()
 	} else {
 		tx.Commit()
 	}
 	return nil
+}
+
+func (dbR *ElectConsumeDBRrepo) GetElectConsume(tx *gorm.DB, t time.Time) (record ElectConsume, err error) {
+	tFirst := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.Now().Location())
+	tEnd := time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 0, time.Now().Location())
+	err = tx.Where("record_date BETWEEN ? AND ?", tFirst, tEnd).First(&record).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return ElectConsume{}, ErrNotFound
+	} else if err != nil {
+		logger.Errorw("database internal error", "error", err)
+		return ElectConsume{}, err
+	}
+	return record, err
 }
