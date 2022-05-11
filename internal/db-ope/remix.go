@@ -80,10 +80,19 @@ func (dbR *ElectConsumeDBRrepo) GetElectConsume(tx *gorm.DB, t time.Time) (recor
 	tEnd := time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 0, time.Now().Location())
 	err = tx.Where("record_date BETWEEN ? AND ?", tFirst, tEnd).First(&record).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return ElectConsume{}, ErrNotFound
+		return ElectConsume{}, gorm.ErrRecordNotFound
 	} else if err != nil {
 		logger.Errorw("database internal error", "error", err)
 		return ElectConsume{}, err
 	}
 	return record, err
+}
+
+func (dbR *ElectConsumeDBRrepo) PostElectConsume(tx *gorm.DB, record ElectConsume) (err error) {
+	res := tx.Create(&record)
+	if res.Error != nil {
+		logger.Errorw("database internal error", "error", err)
+		return ErrInternal
+	}
+	return nil
 }

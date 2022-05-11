@@ -50,19 +50,23 @@ func Start() (err error) {
 	return nil
 }
 
-func (s *server) ElectConsumePost(ctx context.Context, in *pb.OnedayElectConsume) (*empty.Empty, error) {
-	logger.Infow("receive data", "api", "ElectConsumePost", "data", in)
-	return &empty.Empty{}, nil
-}
-
 func (s *server) ElectConsumeGet(ctx context.Context, in *pb.DateStruct) (*pb.OnedayElectConsume, error) {
 	logger.Infow("receive data", "api", "ElectConsumeGet")
-
-	t := time.Date(int(in.Year), time.Month(int(in.Month)), int(in.Day), 0, 0, 0, 0, time.Now().Location())
+	t := grpcDateStructTodateTime(in)
 	record, err := apis.GetElectConsume(t)
 	if err != nil {
 		logger.Error("error", err)
 	}
-	retData := pb.OnedayElectConsume{Daytime: record.Daytime, Nighttime: record.Nighttime, Total: record.Total}
+	retData := pb.OnedayElectConsume{Date: &pb.DateStruct{Year: in.Year, Month: in.Month, Day: in.Day}, Daytime: record.Daytime, Nighttime: record.Nighttime, Total: record.Total}
+	logger.Infow("send to client data", "data", &retData)
 	return &retData, nil
+}
+
+func (s *server) ElectConsumePost(ctx context.Context, in *pb.OnedayElectConsume) (*empty.Empty, error) {
+	logger.Infow("receive data", "api", "ElectConsumePost", "data", in)
+
+	t := grpcDateStructTodateTime(in.Date)
+	postData := db.ElectConsume{RecordDate: t, Daytime: in.Daytime, Nighttime: in.Nighttime, Total: in.Total}
+	err := apis.PostElectConsume(postData)
+	return &empty.Empty{}, err
 }

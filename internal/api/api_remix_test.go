@@ -11,20 +11,35 @@ import (
 	"gorm.io/gorm"
 )
 
-type ElectConsumeDBRepositoryNormal struct {
-	// すべて正常系
+type ElectConsumeDBRepositoryNormalGet struct {
+	// すべてGET正常系
 	db.UnimplementedElectConsumeDBRepository
 }
 
-func (dbR *ElectConsumeDBRepositoryNormal) GetElectConsume(tx *gorm.DB, t time.Time) (record db.ElectConsume, err error) {
+func (dbR *ElectConsumeDBRepositoryNormalGet) GetElectConsume(tx *gorm.DB, t time.Time) (record db.ElectConsume, err error) {
 	return db.ElectConsume{Id: 1, RecordDate: time.Date(2000, 1, 23, 0, 0, 0, 0, time.Now().Location()), Daytime: 100, Nighttime: 200, Total: 300}, nil
 }
 
-func (dbR *ElectConsumeDBRepositoryNormal) PostElectConsume(tx *gorm.DB, record db.ElectConsume) (err error) {
+func (dbR *ElectConsumeDBRepositoryNormalGet) PostElectConsume(tx *gorm.DB, record db.ElectConsume) (err error) {
 	return nil
 }
 
-func (dbR *ElectConsumeDBRepositoryNormal) mustEmbedUnimplementedElectConsumeDBRepository() {}
+func (dbR *ElectConsumeDBRepositoryNormalGet) mustEmbedUnimplementedElectConsumeDBRepository() {}
+
+type ElectConsumeDBRepositoryNormalPost struct {
+	// すべてPOST正常系
+	db.UnimplementedElectConsumeDBRepository
+}
+
+func (dbR *ElectConsumeDBRepositoryNormalPost) GetElectConsume(tx *gorm.DB, t time.Time) (record db.ElectConsume, err error) {
+	return db.ElectConsume{}, gorm.ErrRecordNotFound
+}
+
+func (dbR *ElectConsumeDBRepositoryNormalPost) PostElectConsume(tx *gorm.DB, record db.ElectConsume) (err error) {
+	return nil
+}
+
+func (dbR *ElectConsumeDBRepositoryNormalPost) mustEmbedUnimplementedElectConsumeDBRepository() {}
 
 type ElectConsumeDBRepositoryErrorResponse struct {
 	// すべてエラー応答
@@ -32,11 +47,11 @@ type ElectConsumeDBRepositoryErrorResponse struct {
 }
 
 func (dbR *ElectConsumeDBRepositoryErrorResponse) GetElectConsume(tx *gorm.DB, t time.Time) (record db.ElectConsume, err error) {
-	return db.ElectConsume{}, db.ErrNotFound
+	return db.ElectConsume{}, gorm.ErrRecordNotFound
 }
 
 func (dbR *ElectConsumeDBRepositoryErrorResponse) PostElectConsume(tx *gorm.DB, record db.ElectConsume) (err error) {
-	return db.ErrRecordAlreadyExists
+	return gorm.ErrInvalidData
 }
 
 func (dbR *ElectConsumeDBRepositoryErrorResponse) mustEmbedUnimplementedElectConsumeDBRepository() {}
@@ -68,7 +83,7 @@ func Test_remixapiService_GetElectConsume(t *testing.T) {
 	}{
 		{
 			name:       "Normally",
-			apis:       &RemixapiServiceRepo{remixdbR: &ElectConsumeDBRepositoryNormal{}},
+			apis:       &RemixapiServiceRepo{remixdbR: &ElectConsumeDBRepositoryNormalGet{}},
 			args:       args{time.Date(2000, 1, 23, 0, 0, 0, 0, time.Now().Location())},
 			wantRecord: db.ElectConsume{Id: 1, RecordDate: time.Date(2000, 1, 23, 0, 0, 0, 0, time.Now().Location()), Daytime: 100, Nighttime: 200, Total: 300},
 			wantErr:    false,
@@ -95,9 +110,8 @@ func Test_remixapiService_GetElectConsume(t *testing.T) {
 	}
 }
 
-func Test_remixapiService_PostElectConsume(t *testing.T) {
+func TestRemixapiServiceRepo_PostElectConsume(t *testing.T) {
 	type args struct {
-		date   time.Time
 		record db.ElectConsume
 	}
 	tests := []struct {
@@ -106,12 +120,17 @@ func Test_remixapiService_PostElectConsume(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:    "Normally",
+			apis:    &RemixapiServiceRepo{remixdbR: &ElectConsumeDBRepositoryNormalPost{}},
+			args:    args{record: db.ElectConsume{RecordDate: time.Date(2000, 1, 23, 4, 5, 123, 123, time.Now().Location()), Daytime: 1000, Nighttime: 2000, Total: 3000}},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.apis.PostElectConsume(tt.args.date, tt.args.record); (err != nil) != tt.wantErr {
-				t.Errorf("remixapiService.PostElectConsume() error = %v, wantErr %v", err, tt.wantErr)
+			if err := tt.apis.PostElectConsume(tt.args.record); (err != nil) != tt.wantErr {
+				t.Errorf("RemixapiServiceRepo.PostElectConsume() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
