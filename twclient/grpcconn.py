@@ -12,8 +12,8 @@ class grpcClient:
     def close(self):
         self.channel.close()
 
-    def ElectConsumeGet(self):
-        req = DateStruct(year=2000, month=10, day=1)
+    def ElectConsumeGet(self, datestruct):
+        req = datestruct
         print("GET bill-manager-api:9999")
         try:
             res = self.stub.ElectConsumeGet(req)
@@ -21,12 +21,14 @@ class grpcClient:
             print(e.code())
         else:
             print(grpc.StatusCode.OK)
+            print("== response ==")
             print(res)
         return res
 
 
 def getTargetDay():
-    today = datetime.date.today()
+    today = datetime.datetime.today()
     oneday = datetime.timedelta(days=1)
     yesterday = today - oneday
+    # return DateStruct(year=2022, month=5, day=3)
     return DateStruct(year=yesterday.year, month=yesterday.month, day=yesterday.day)

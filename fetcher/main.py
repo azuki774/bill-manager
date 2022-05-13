@@ -1,5 +1,6 @@
 from curses import raw
 import time
+import os
 import driver
 from venv import create
 from selenium import webdriver
@@ -11,16 +12,27 @@ from bs4 import BeautifulSoup
 import grpcconn
 import remix
 
+wait_time = 0
+
 if __name__ == "__main__":
+    print("wait for " + str(wait_time) + "sec")
+    time.sleep(wait_time)  # wait for other components
     print("fetcher start")
 
-    # Run Driver
-    driver = driver.get_driver()
-    driver.implicitly_wait(10)
-    print("Get driver")
+    remix_fetch_data = []
+    if os.getenv("fetcher_stub") == "0":
+        # Run Driver
+        driver = driver.get_driver()
+        driver.implicitly_wait(10)
 
-    remix.login(driver)
-    remix_fetch_data = remix.fetch_now_month(driver)
+        print("Get driver")
+
+        remix.login(driver)
+        remix_fetch_data = remix.fetch_now_month(driver)
+    else:
+        print("Use dummy remix")
+        remix_fetch_data = remix.fetch_now_month_dummy()
+
     post_data = remix.make_postdata(remix_fetch_data)
     print(post_data)
     conn = grpcconn.grpcClient()
@@ -36,3 +48,10 @@ if __name__ == "__main__":
     print("the program will end after 1 minutes")
     time.sleep(60)  # 1min sleep for blocking
     print("the program end")
+
+
+def get_start_time():
+    if os.getenv("start_wait") == "":
+        return 0
+    else:
+        return int(os.getenv("start_wait"))
