@@ -4,6 +4,8 @@ import os
 import grpcconn
 from datetime import datetime, timedelta
 
+wait_time = 0
+
 
 def getClient():
     client = tweepy.Client(
@@ -29,7 +31,8 @@ def makeTweetText(daytime, nighttime, total):
 
 
 if __name__ == "__main__":
-    time.sleep(10)
+    print("wait for " + str(wait_time) + "sec")
+    time.sleep(wait_time)  # wait for other components
 
     print("get target date")
     targetDate = grpcconn.getTargetDay()
@@ -38,10 +41,14 @@ if __name__ == "__main__":
     conn = grpcconn.grpcClient()
     conn.open()
     print("grpc connected")
-    res = conn.ElectConsumeGet()
+    res = conn.ElectConsumeGet(targetDate)
     conn.close()
 
-    print("make tweetText")
+    if res.total == 0:
+        print("fetch data error")
+        exit(1)
+
+    print("=== make tweetText ===")
     tweetText = makeTweetText(res.daytime, res.nighttime, res.total)
     print(tweetText)
 
@@ -58,3 +65,10 @@ if __name__ == "__main__":
     print("the program will end after 10 minutes")
     time.sleep(60 * 10)  # 10min sleep for blocking
     print("the program end")
+
+
+def get_start_time():
+    if os.getenv("start_wait") == "":
+        return 0
+    else:
+        return int(os.getenv("start_wait"))

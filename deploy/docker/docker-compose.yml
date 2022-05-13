@@ -24,7 +24,7 @@ services:
     env_file:
     - fetcher-token.env
     environment:
-      fetcher_stub: 1 # 0 .. fetch, 1 .. for development (not fetch actually)
+      fetcher_stub: 0 # 0 .. fetch, 1 .. for development (not fetch actually)
       start_wait: 10
 
   mawinter-client:
@@ -39,5 +39,5 @@ services:
     env_file:
     - tw-token.env
     environment:
-      twitter_stub: 1 # 0 .. send to Twitter, 1 .. for development (not send actually)
+      twitter_stub: 0 # 0 .. send to Twitter, 1 .. for development (not send actually)
       start_wait: 20
