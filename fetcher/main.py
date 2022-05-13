@@ -14,7 +14,16 @@ import remix
 
 wait_time = 0
 
+
+def get_start_time():
+    if os.getenv("start_wait") == "":
+        return 0
+    else:
+        return int(os.getenv("start_wait"))
+
+
 if __name__ == "__main__":
+    get_start_time()
     print("wait for " + str(wait_time) + "sec")
     time.sleep(wait_time)  # wait for other components
     print("fetcher start")
@@ -48,10 +57,3 @@ if __name__ == "__main__":
     print("the program will end after 1 minutes")
     time.sleep(60)  # 1min sleep for blocking
     print("the program end")
-
-
-def get_start_time():
-    if os.getenv("start_wait") == "":
-        return 0
-    else:
-        return int(os.getenv("start_wait"))
