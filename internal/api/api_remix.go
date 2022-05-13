@@ -1,11 +1,10 @@
 package api
 
 import (
-	"errors"
 	"time"
 
 	db "github.com/azuki774/bill-manager/internal/db-ope"
-	"gorm.io/gorm"
+	"go.uber.org/zap"
 )
 
 type RemixapiServiceRepository interface {
@@ -58,17 +57,16 @@ func (apis *RemixapiServiceRepo) PostElectConsume(record db.ElectConsume) (err e
 	tx := apis.remixdbR.OpenTx()
 	defer apis.remixdbR.CloseTx(tx, err)
 
-	_, err = apis.remixdbR.GetElectConsume(tx, record.RecordDate)
-	if err != nil && (!errors.Is(err, gorm.ErrRecordNotFound)) {
-		logger.Errorw("database unknown error", "error", err)
-		return err
-	}
-
-	if err == nil {
-		logger.Warnw("the record is already existed")
+	count, err := apis.remixdbR.GetCountElectConsume(tx, record.RecordDate)
+	logger.Debug("count", count)
+	if count > 0 {
+		logger.Warnw("the data is already exists")
 		return db.ErrRecordAlreadyExists
 	}
-	// TODO: 更新が必要かどうかを確認 and 更新 (not yet implemented)
+	if err != nil {
+		logger.Error("error", zap.Error(err))
+		return err
+	}
 
 	// add record
 	err = apis.remixdbR.PostElectConsume(tx, record)

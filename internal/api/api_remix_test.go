@@ -12,7 +12,7 @@ import (
 )
 
 type ElectConsumeDBRepositoryNormalGet struct {
-	// すべてGET正常系
+	// すべて正常系
 	db.UnimplementedElectConsumeDBRepository
 }
 
@@ -24,22 +24,11 @@ func (dbR *ElectConsumeDBRepositoryNormalGet) PostElectConsume(tx *gorm.DB, reco
 	return nil
 }
 
+func (dbR *ElectConsumeDBRepositoryNormalGet) GetCountElectConsume(tx *gorm.DB, t time.Time) (count int64, err error) {
+	return 0, nil
+}
+
 func (dbR *ElectConsumeDBRepositoryNormalGet) mustEmbedUnimplementedElectConsumeDBRepository() {}
-
-type ElectConsumeDBRepositoryNormalPost struct {
-	// すべてPOST正常系
-	db.UnimplementedElectConsumeDBRepository
-}
-
-func (dbR *ElectConsumeDBRepositoryNormalPost) GetElectConsume(tx *gorm.DB, t time.Time) (record db.ElectConsume, err error) {
-	return db.ElectConsume{}, gorm.ErrRecordNotFound
-}
-
-func (dbR *ElectConsumeDBRepositoryNormalPost) PostElectConsume(tx *gorm.DB, record db.ElectConsume) (err error) {
-	return nil
-}
-
-func (dbR *ElectConsumeDBRepositoryNormalPost) mustEmbedUnimplementedElectConsumeDBRepository() {}
 
 type ElectConsumeDBRepositoryErrorResponse struct {
 	// すべてエラー応答
@@ -54,7 +43,30 @@ func (dbR *ElectConsumeDBRepositoryErrorResponse) PostElectConsume(tx *gorm.DB, 
 	return gorm.ErrInvalidData
 }
 
+func (dbR *ElectConsumeDBRepositoryErrorResponse) GetCountElectConsume(tx *gorm.DB, t time.Time) (count int64, err error) {
+	return 0, nil
+}
+
 func (dbR *ElectConsumeDBRepositoryErrorResponse) mustEmbedUnimplementedElectConsumeDBRepository() {}
+
+type ElectConsumeDBRepositoryErrorExisted struct {
+	// ErrDataAlreadyExisted
+	db.UnimplementedElectConsumeDBRepository
+}
+
+func (dbR *ElectConsumeDBRepositoryErrorExisted) GetElectConsume(tx *gorm.DB, t time.Time) (record db.ElectConsume, err error) {
+	return db.ElectConsume{Id: 1, RecordDate: time.Date(2000, 1, 23, 0, 0, 0, 0, time.Now().Location()), Daytime: 100, Nighttime: 200, Total: 300}, nil
+}
+
+func (dbR *ElectConsumeDBRepositoryErrorExisted) PostElectConsume(tx *gorm.DB, record db.ElectConsume) (err error) {
+	return gorm.ErrInvalidData
+}
+
+func (dbR *ElectConsumeDBRepositoryErrorExisted) GetCountElectConsume(tx *gorm.DB, t time.Time) (count int64, err error) {
+	return 1, nil
+}
+
+func (dbR *ElectConsumeDBRepositoryErrorExisted) mustEmbedUnimplementedElectConsumeDBRepository() {}
 
 func setup() {
 	config := zap.NewProductionConfig()
@@ -122,9 +134,15 @@ func TestRemixapiServiceRepo_PostElectConsume(t *testing.T) {
 	}{
 		{
 			name:    "Normally",
-			apis:    &RemixapiServiceRepo{remixdbR: &ElectConsumeDBRepositoryNormalPost{}},
+			apis:    &RemixapiServiceRepo{remixdbR: &ElectConsumeDBRepositoryNormalGet{}},
 			args:    args{record: db.ElectConsume{RecordDate: time.Date(2000, 1, 23, 4, 5, 123, 123, time.Now().Location()), Daytime: 1000, Nighttime: 2000, Total: 3000}},
 			wantErr: false,
+		},
+		{
+			name:    "AlreadyExist",
+			apis:    &RemixapiServiceRepo{remixdbR: &ElectConsumeDBRepositoryErrorExisted{}},
+			args:    args{record: db.ElectConsume{RecordDate: time.Date(2000, 1, 23, 4, 5, 123, 123, time.Now().Location()), Daytime: 1000, Nighttime: 2000, Total: 3000}},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
