@@ -23,7 +23,7 @@ def get_start_time():
 
 
 if __name__ == "__main__":
-    get_start_time()
+    wait_time = get_start_time()
     print("wait for " + str(wait_time) + "sec")
     time.sleep(wait_time)  # wait for other components
     print("fetcher start")
