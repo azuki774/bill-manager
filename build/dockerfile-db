@@ -2,3 +2,4 @@ FROM mariadb:10.7.3-focal
 LABEL description="bill-manager-db"
 COPY build/initdb.d/init.sql /docker-entrypoint-initdb.d/init.sql
 COPY build/my.cnf /etc/my.cnf
+EXPOSE 3306

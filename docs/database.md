@@ -1,9 +1,9 @@
 # BILLMANAGER
 
-## elect_consume
+## elect_consumes
 
 ```
-MariaDB [BILLMANAGER]> show columns from elect_consume;
+MariaDB [BILLMANAGER]> show columns from elect_consumes;
 +-------------+---------+------+-----+---------------------+----------------+
 | Field       | Type    | Null | Key | Default             | Extra          |
 +-------------+---------+------+-----+---------------------+----------------+
@@ -16,3 +16,4 @@ MariaDB [BILLMANAGER]> show columns from elect_consume;
 | total       | int(11) | YES  |     | NULL                |                |
 +-------------+---------+------+-----+---------------------+----------------+
 ```
+- ただし、record_date として、同じ日付に２つのレコードを登録しない。

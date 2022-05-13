@@ -12,6 +12,10 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD : billmanager
+      MYSQL_HOST: bill-manager-db
+      MYSQL_DATABASE: BILLMANAGER
+      TZ: Asia/Tokyo
+      LANG: C.UTF-8
 
   fetcher:
     image: azuki774/bill-manager-fetcher
@@ -19,6 +23,9 @@ services:
     restart: always
     env_file:
     - fetcher-token.env
+    environment:
+      fetcher_stub: 1 # 0 .. fetch, 1 .. for development (not fetch actually)
+      start_wait: 10
 
   mawinter-client:
     image: azuki774/bill-manager-mawinter
@@ -32,5 +39,5 @@ services:
     env_file:
     - tw-token.env
     environment:
-    - twitter_stub=1 # 0 .. send to Twitter, 1 .. for development (not send actually)
-
+      twitter_stub: 1 # 0 .. send to Twitter, 1 .. for development (not send actually)
+      start_wait: 20
