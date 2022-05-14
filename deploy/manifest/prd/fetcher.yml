@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bill-manager-fetcher
+spec:
+  schedule: "15 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - image: ghcr.io/azuki774/bill-manager-fetcher:latest
+            name: bill-manager-fetcher
+            env:
+            - name: fetcher_stub
+              value: "0"
+            - name: bill-manager-fetcher-remix-id
+              valueFrom:
+                secretKeyRef:
+                  name: bill-manager-fetcher-remix
+                  key: remix_id
+            - name: bill-manager-fetcher-remix-pass
+              valueFrom:
+                secretKeyRef:
+                  name: bill-manager-fetcher-remix
+                  key: remix_pass
+          restartPolicy: Never
