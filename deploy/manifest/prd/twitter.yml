@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: bill-manager-twitter
 spec:
-  schedule: "30 * * * *"
+  schedule: "30 0 * * *"
   jobTemplate:
     spec:
       template:
