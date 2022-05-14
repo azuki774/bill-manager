@@ -27,7 +27,21 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-            
+
+      - name: Set meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ghcr.io/azuki774/bill-manager-api
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=semver,pattern=latest
+
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -52,7 +66,7 @@ jobs:
           context: .
           file: ./build/dockerfile-api
           push: true
-          tags: ghcr.io/azuki774/bill-manager-api:latest
+          tags: ${{ steps.meta.outputs.tags }}
 
   build_and_push_db:
     runs-on: ubuntu-latest
@@ -62,7 +76,21 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-            
+
+      - name: Set meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ghcr.io/azuki774/bill-manager-db
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=semver,pattern=latest
+
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -87,7 +115,7 @@ jobs:
           context: .
           file: ./build/dockerfile-db
           push: true
-          tags: ghcr.io/azuki774/bill-manager-db:latest
+          tags: ${{ steps.meta.outputs.labels }}
 
   build_and_push_fetcher:
     runs-on: ubuntu-latest
@@ -97,7 +125,21 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-            
+
+      - name: Set meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ghcr.io/azuki774/bill-manager-fetcher
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=semver,pattern=latest
+
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -122,7 +164,7 @@ jobs:
           context: .
           file: ./build/dockerfile-fetcher
           push: true
-          tags: ghcr.io/azuki774/bill-manager-fetcher:latest
+          tags: ${{ steps.meta.outputs.labels }}
 
   build_and_push_twitter:
     runs-on: ubuntu-latest
@@ -132,7 +174,21 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-            
+
+      - name: Set meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ghcr.io/azuki774/bill-manager-twitter
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=semver,pattern=latest
+
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -157,4 +213,4 @@ jobs:
           context: .
           file: ./build/dockerfile-twitter
           push: true
-          tags: ghcr.io/azuki774/bill-manager-twitter:latest
+          tags: ${{ steps.meta.outputs.labels }}
