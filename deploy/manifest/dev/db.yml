@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: billm-pv
+  labels:
+    volume: billm-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: slow
+  hostPath:
+    path: /data/billm-pv
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: billm-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      volume: billm-pv
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bill-manager-db
+spec:
+  selector:
+    matchLabels:
+      app: bill-manager-db
+  template:
+    metadata:
+      labels:
+        app: bill-manager-db
+    spec:
+      containers:
+      - name: bill-manager-db
+        image: ghcr.io/azuki774/bill-manager-db:develop
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3306
+        resources:
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: billmanager
+        - name: MYSQL_DATABASE
+          value: BILLMANAGER
+        - name: TZ
+          value: Asia/Tokyo
+        - name: LANG
+          value: C.UTF-8
+        volumeMounts:
+        - name: billm-pv
+          mountPath: /var/lib/mysql
+
+      volumes:
+      - name: billm-pv
+        persistentVolumeClaim:
+          claimName: billm-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bill-manager-db
+spec:
+  selector:
+    app: bill-manager-db
+  ports:
+  - port: 3306
+  type: ClusterIP

@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bill-manager-fetcher
+spec:
+  schedule: "0 */1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - image: ghcr.io/azuki774/bill-manager-fetcher:develop
+            name: bill-manager-fetcher
+            env:
+            - name: fetcher_stub
+              value: "1"
+          restartPolicy: Never
