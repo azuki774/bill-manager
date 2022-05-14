@@ -26,9 +26,8 @@ class grpcClient:
         return res
 
 
-def getTargetDay():
-    today = datetime.datetime.today()
-    oneday = datetime.timedelta(days=1)
-    yesterday = today - oneday
-    # return DateStruct(year=2022, month=5, day=3)
+def get_targetDay():
+    # 前日が何月を確認するために実装
+    nowadays = datetime.datetime.now() + datetime.timedelta(hours=9)
+    yesterday = nowadays - datetime.timedelta(1)
     return DateStruct(year=yesterday.year, month=yesterday.month, day=yesterday.day)

@@ -88,35 +88,36 @@ def fetch_now_month(driver):
 
 
 def fetch_now_month_dummy():
-    result_data = [
-        [1, 1.0, 1.5],
-        [2, 2.0, 2.5],
-        [3, 3.0, 3.5],
-        [4, 4.0, 4.5],
-        [5, 5.0, 5.5],
-    ]
+    result_data = []
+    ds = get_targetDay()
+    count = ds.day
+
+    for num in range(count):
+        result_data.append([(num + 1), 1.0 * (num + 1), 1.5 * (num + 1)])
+
     print(result_data)
     return result_data
 
 
 def get_targetDay():
-    today = datetime.date.today()
-    oneday = datetime.timedelta(days=1)
-    yesterday = today - oneday
+    # 前日が何月を確認するために実装
+    nowadays = datetime.datetime.now() + datetime.timedelta(hours=9)
+    yesterday = nowadays - datetime.timedelta(1)
     return DateStruct(year=yesterday.year, month=yesterday.month, day=yesterday.day)
 
 
 def make_postdata(fetch_data):
     ret_data = []
-    # [1, 2.0, 3.0] -> [DataStruct(year=2022,month=1,day=1), 2000, 3000, 5000] kWh -> Wh
+
     for data in fetch_data:
-        datastruct = get_targetDay()
-        datastruct.day = data[0]  # 日のみ今から送信する日に上書き
+        targetday = get_targetDay()
+        # [1, 2.0, 3.0] -> [DataStruct(year=2022,month=1,day=1), 2000, 3000, 5000] kWh -> Wh
+        targetday.day = data[0]  # 日のみ今から送信する日に上書き
         if data[1] + data[2] == 0.0:
             break
         ret_data.append(
             [
-                datastruct,
+                targetday,
                 int(round(data[1] * 1000)),
                 int(round(data[2] * 1000)),
                 int(round(data[1] * 1000)) + int(round(data[2] * 1000)),

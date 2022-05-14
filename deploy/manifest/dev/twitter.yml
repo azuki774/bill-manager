@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bill-manager-twitter
+spec:
+  schedule: "0 */1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - image: ghcr.io/azuki774/bill-manager-twitter:develop
+            name: bill-manager-twitter
+            env:
+            - name: twitter_stub
+              value: "1"
+          restartPolicy: Never

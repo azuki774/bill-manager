@@ -18,7 +18,7 @@ def getClient():
 
 
 def makeTweetText(daytime, nighttime, total):
-    today = datetime.now()
+    today = datetime.now() + datetime.timedelta(hours=9)
     yesterday = today - timedelta(1)
     yesterdayString = yesterday.strftime("%Y-%m-%d")
     text = ""
@@ -30,12 +30,17 @@ def makeTweetText(daytime, nighttime, total):
     return text
 
 
+def get_start_time():
+    return int(os.environ.get("start_wait", "0"))
+
+
 if __name__ == "__main__":
+    wait_time = get_start_time()
     print("wait for " + str(wait_time) + "sec")
     time.sleep(wait_time)  # wait for other components
 
     print("get target date")
-    targetDate = grpcconn.getTargetDay()
+    targetDate = grpcconn.get_targetDay()
     print(targetDate)
 
     conn = grpcconn.grpcClient()
@@ -65,10 +70,3 @@ if __name__ == "__main__":
     print("the program will end after 10 minutes")
     time.sleep(60 * 10)  # 10min sleep for blocking
     print("the program end")
-
-
-def get_start_time():
-    if os.getenv("start_wait") == "":
-        return 0
-    else:
-        return int(os.getenv("start_wait"))
