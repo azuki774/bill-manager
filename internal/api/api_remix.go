@@ -61,7 +61,8 @@ func (apis *RemixapiServiceRepo) PostElectConsume(record db.ElectConsume) (err e
 	logger.Debug("count", count)
 	if count > 0 {
 		logger.Warnw("the data is already exists")
-		return db.ErrRecordAlreadyExists
+		err = db.ErrRecordAlreadyExists
+		return err
 	}
 	if err != nil {
 		logger.Error("error", zap.Error(err))
