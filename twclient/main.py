@@ -2,7 +2,7 @@ import time
 import tweepy
 import os
 import grpcconn
-from datetime import datetime, timedelta
+import datetime
 
 wait_time = 0
 
@@ -18,8 +18,8 @@ def getClient():
 
 
 def makeTweetText(daytime, nighttime, total):
-    today = datetime.now() + datetime.timedelta(hours=9)
-    yesterday = today - timedelta(1)
+    today = datetime.datetime.now() + datetime.timedelta(hours=9)
+    yesterday = today - datetime.timedelta(1)
     yesterdayString = yesterday.strftime("%Y-%m-%d")
     text = ""
     text += "@azuki774s\n"
