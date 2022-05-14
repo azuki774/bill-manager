@@ -8,6 +8,7 @@ spec:
       containers:
       - image: ghcr.io/azuki774/bill-manager-fetcher:develop
         name: bill-manager-fetcher-test
+        imagePullPolicy: Always
         env:
         - name: fetcher_stub
           value: "0"
