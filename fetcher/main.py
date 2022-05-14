@@ -16,10 +16,7 @@ wait_time = 0
 
 
 def get_start_time():
-    if os.getenv("start_wait") == "":
-        return 0
-    else:
-        return int(os.getenv("start_wait"))
+    return int(os.environ.get("start_wait", "0"))
 
 
 if __name__ == "__main__":
