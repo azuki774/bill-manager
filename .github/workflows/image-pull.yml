@@ -115,7 +115,7 @@ jobs:
           context: .
           file: ./build/dockerfile-db
           push: true
-          tags: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
 
   build_and_push_fetcher:
     runs-on: ubuntu-latest
@@ -164,7 +164,7 @@ jobs:
           context: .
           file: ./build/dockerfile-fetcher
           push: true
-          tags: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
 
   build_and_push_twitter:
     runs-on: ubuntu-latest
@@ -213,4 +213,4 @@ jobs:
           context: .
           file: ./build/dockerfile-twitter
           push: true
-          tags: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
