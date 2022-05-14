@@ -14,12 +14,12 @@ spec:
             env:
             - name: fetcher_stub
               value: "0"
-            - name: bill-manager-fetcher-remix-id
+            - name: remix_id
               valueFrom:
                 secretKeyRef:
                   name: bill-manager-fetcher-remix
                   key: remix_id
-            - name: bill-manager-fetcher-remix-pass
+            - name: remix_pass
               valueFrom:
                 secretKeyRef:
                   name: bill-manager-fetcher-remix
