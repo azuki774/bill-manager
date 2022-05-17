@@ -18,6 +18,7 @@ def getClient():
 
 
 def makeTweetText(daytime, nighttime, total):
+    time.sleep(1000)  # FOR TEST
     today = datetime.datetime.now() + datetime.timedelta(hours=9)
     yesterday = today - datetime.timedelta(1)
     yesterdayString = yesterday.strftime("%Y-%m-%d")
