@@ -1,0 +1,16 @@
+[
+    {
+        "category_id": 100,
+        "price": 123
+    },
+    {
+        "category_id": 110,
+        "Price": 456,
+        "memo": "memomemo"
+    },
+    {
+        "category_id": 200,
+        "price": 789,
+        "date": "20060102"
+    }
+]
