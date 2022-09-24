@@ -5,7 +5,7 @@ import (
 	"net"
 	"time"
 
-	db "github.com/azuki774/bill-manager/internal/db-ope"
+	db "github.com/azuki774/bill-manager/internal/repository"
 	pb "github.com/azuki774/bill-manager/internal/grpcapi"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"

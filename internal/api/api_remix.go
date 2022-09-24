@@ -3,7 +3,7 @@ package api
 import (
 	"time"
 
-	db "github.com/azuki774/bill-manager/internal/db-ope"
+	db "github.com/azuki774/bill-manager/internal/repository"
 	"go.uber.org/zap"
 )
 
