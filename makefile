@@ -19,10 +19,10 @@ build:
 	docker build -t $(CONTAINER_NAME_TWITTER) -f build/dockerfile-twitter .
 
 start:
-	docker compose -f deploy/docker/docker-compose.yml up -d
+	docker compose -f deployment/compose.yml up -d
 
 stop:
-	docker compose -f deploy/docker/docker-compose.yml down
+	docker compose -f deployment/compose.yml down
 
 clean:
 	rm -rf build/bin/*
@@ -34,13 +34,3 @@ proto-build:
 
 rebuild:
 	make stop && make clean && make && make start
-
-push:	
-	docker tag $(CONTAINER_NAME_API) ghcr.io/$(CONTAINER_NAME_API):develop
-	docker tag $(CONTAINER_NAME_DB) ghcr.io/$(CONTAINER_NAME_DB):develop
-	docker tag $(CONTAINER_NAME_FETCHER) ghcr.io/$(CONTAINER_NAME_FETCHER):develop
-	docker tag $(CONTAINER_NAME_TWITTER) ghcr.io/$(CONTAINER_NAME_TWITTER):develop
-	docker push ghcr.io/$(CONTAINER_NAME_API):develop
-	docker push ghcr.io/$(CONTAINER_NAME_DB):develop
-	docker push ghcr.io/$(CONTAINER_NAME_FETCHER):develop
-	docker push ghcr.io/$(CONTAINER_NAME_TWITTER):develop
