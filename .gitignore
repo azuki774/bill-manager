@@ -1,3 +1,4 @@
 build/bin/
 tw-token.env
 fetcher-token.env
+.vscode
