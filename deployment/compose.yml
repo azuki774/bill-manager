@@ -1,6 +1,5 @@
 version: '3'
 services:
-
   api:
     image: azuki774/bill-manager-api
     container_name: bill-manager-api
@@ -41,32 +40,3 @@ services:
     environment:
       twitter_stub: 1 # 0 .. send to Twitter, 1 .. for development (not send actually)
       start_wait: 20
-
-  maw-db:
-    image: mariadb:10.7.3
-    restart: always
-    container_name: mawinter-db
-    command:
-      - mysqld
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_DATABASE=mawinter
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=pwd
-      - TZ=Asia/Tokyo
-    volumes:
-      - ../build/mawinter-initdb.d:/docker-entrypoint-initdb.d
-  maw-api:
-    image: mawinter-api:latest
-    container_name: mawinter-api
-    ports:
-      - "8888:80"
-    environment:
-      - MYSQL_DATABASE=mawinter
-      - BASIC_AUTH_USERNAME=test
-      - BASIC_AUTH_PASSWORD=test
-      - DB_WAITTIME=20
