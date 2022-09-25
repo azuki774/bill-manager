@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/golang/protobuf v1.5.2
+	github.com/jarcoal/httpmock v1.2.0
 	github.com/spf13/cobra v1.4.0
 	go.uber.org/zap v1.21.0
 	google.golang.org/grpc v1.46.0

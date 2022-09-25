@@ -1,4 +1,4 @@
-package db_ope
+package repository
 
 import (
 	"fmt"

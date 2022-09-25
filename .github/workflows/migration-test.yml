@@ -1,0 +1,29 @@
+name: Build
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - '**' 
+
+jobs:
+  migration-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.18
+
+    - name: build
+      run: go build -a -tags "netgo" -installsuffix netgo  -ldflags="-s -w -extldflags \"-static\"" -o build/bin/ ./...
+
+    - name: mawinter start
+      run: docker compose -f deployment/mawinter.yml up -d; sleep 10s
+
+    - name: test-post
+      run: build/bin/bill-mawinter post test/data.json

@@ -1,7 +1,7 @@
 package api
 
 import (
-	db "github.com/azuki774/bill-manager/internal/db-ope"
+	db "github.com/azuki774/bill-manager/internal/repository"
 	"go.uber.org/zap"
 )
 
