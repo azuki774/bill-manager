@@ -1,4 +1,4 @@
-# [WIP] bill-manager
+# bill-manager
 
 ## Description
 - 公共料金の明細やクラウドの請求書を、スクレイピングで取りに行く。
