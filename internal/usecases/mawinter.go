@@ -15,7 +15,7 @@ type HTTPClient interface {
 }
 
 type FileLoader interface {
-	LoadRecordsFromJSON(filePath string) (recs []model.CreateRecord, err error)
+	LoadRecordsFromJSON(ctx context.Context, filePath string) (recs []model.CreateRecord, err error)
 }
 
 type UsecaseMawinter struct {
@@ -26,7 +26,7 @@ type UsecaseMawinter struct {
 
 func (u *UsecaseMawinter) RegistFromJSON(ctx context.Context, jsonfile string) (err error) {
 	u.Logger.Info("regist records from JSON")
-	recs, err := u.FileLoader.LoadRecordsFromJSON(jsonfile)
+	recs, err := u.FileLoader.LoadRecordsFromJSON(ctx, jsonfile)
 	if err != nil {
 		u.Logger.Error("failed to load jsonfile", zap.String("filename", jsonfile), zap.Error(err))
 		return err

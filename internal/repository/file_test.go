@@ -1,14 +1,17 @@
 package repository
 
 import (
+	"context"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/azuki774/bill-manager/internal/model"
 )
 
 func TestFileLoader_LoadRecordsFromJSON(t *testing.T) {
 	type args struct {
+		ctx      context.Context
 		filePath string
 	}
 	tests := []struct {
@@ -21,6 +24,7 @@ func TestFileLoader_LoadRecordsFromJSON(t *testing.T) {
 		{
 			name: "ok",
 			args: args{
+				ctx:      model.NewCtxYYYYMM(time.Date(2000, 5, 1, 0, 0, 0, 0, time.Local)),
 				filePath: "../../test/data.json",
 			},
 			f: &FileLoader{},
@@ -37,7 +41,7 @@ func TestFileLoader_LoadRecordsFromJSON(t *testing.T) {
 				{
 					CategoryID: 200,
 					Price:      789,
-					Date:       "20060102",
+					Date:       "20000505",
 				},
 			},
 			wantErr: false,
@@ -46,7 +50,7 @@ func TestFileLoader_LoadRecordsFromJSON(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := &FileLoader{}
-			gotRecs, err := f.LoadRecordsFromJSON(tt.args.filePath)
+			gotRecs, err := f.LoadRecordsFromJSON(tt.args.ctx, tt.args.filePath)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FileLoader.LoadRecordsFromJSON() error = %v, wantErr %v", err, tt.wantErr)
 				return
