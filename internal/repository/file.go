@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"encoding/json"
 	"io/ioutil"
 	"os"
@@ -10,7 +11,7 @@ import (
 
 type FileLoader struct{}
 
-func (f *FileLoader) LoadRecordsFromJSON(filePath string) (recs []model.CreateRecord, err error) {
+func (f *FileLoader) LoadRecordsFromJSON(ctx context.Context, filePath string) (recs []model.CreateRecord, err error) {
 	content, err := os.Open(filePath)
 	if err != nil {
 		return recs, err
@@ -21,9 +22,16 @@ func (f *FileLoader) LoadRecordsFromJSON(filePath string) (recs []model.CreateRe
 		return recs, err
 	}
 
-	err = json.Unmarshal(contentBin, &recs)
+	var incs []model.InCreateRecord
+	err = json.Unmarshal(contentBin, &incs)
 	if err != nil {
 		return recs, err
+	}
+
+	for _, inc := range incs {
+		var rec model.CreateRecord
+		rec.FromInCreateRecord(ctx, &inc)
+		recs = append(recs, rec)
 	}
 	return recs, nil
 }

@@ -21,6 +21,6 @@ type MockFileLoader struct {
 	err  error
 }
 
-func (m MockFileLoader) LoadRecordsFromJSON(filePath string) (recs []model.CreateRecord, err error) {
+func (m MockFileLoader) LoadRecordsFromJSON(ctx context.Context, filePath string) (recs []model.CreateRecord, err error) {
 	return m.recs, m.err
 }
