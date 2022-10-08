@@ -26,4 +26,4 @@ jobs:
       run: docker compose -f deployment/mawinter.yml up -d; sleep 10s
 
     - name: test-post
-      run: build/bin/bill-mawinter post test/data.json
+      run: build/bin/bill-manager-mawinter post test/data.json
