@@ -52,11 +52,13 @@ func TestUsecaseMawinter_RegistFromJSON(t *testing.T) {
 						{
 							CategoryID: 100,
 							Price:      100,
+							From:       "bill-manager-mawinter",
 							Memo:       "Memo",
 						},
 						{
 							CategoryID: 200,
 							Price:      200,
+							From:       "bill-manager-mawinter",
 							Memo:       "Memo",
 						},
 					},
@@ -82,11 +84,13 @@ func TestUsecaseMawinter_RegistFromJSON(t *testing.T) {
 						{
 							CategoryID: 100,
 							Price:      100,
+							From:       "bill-manager-mawinter",
 							Memo:       "Memo",
 						},
 						{
 							CategoryID: 200,
 							Price:      200,
+							From:       "bill-manager-mawinter",
 							Memo:       "Memo",
 						},
 					},
@@ -110,11 +114,13 @@ func TestUsecaseMawinter_RegistFromJSON(t *testing.T) {
 						{
 							CategoryID: 100,
 							Price:      100,
+							From:       "bill-manager-mawinter",
 							Memo:       "Memo",
 						},
 						{
 							CategoryID: 200,
 							Price:      200,
+							From:       "bill-manager-mawinter",
 							Memo:       "Memo",
 						},
 					},

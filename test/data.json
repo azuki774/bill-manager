@@ -5,7 +5,8 @@
     },
     {
         "category_id": 110,
-        "Price": 456,
+        "price": 456,
+        "type": "S",
         "memo": "memomemo"
     },
     {
