@@ -32,16 +32,20 @@ func TestFileLoader_LoadRecordsFromJSON(t *testing.T) {
 				{
 					CategoryID: 100,
 					Price:      123,
+					From:       "bill-manager-mawinter",
 				},
 				{
 					CategoryID: 110,
 					Price:      456,
+					From:       "bill-manager-mawinter",
+					Type:       "S",
 					Memo:       "memomemo",
 				},
 				{
 					CategoryID: 200,
 					Price:      789,
 					Date:       "20000505",
+					From:       "bill-manager-mawinter",
 				},
 			},
 			wantErr: false,

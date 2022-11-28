@@ -1,13 +1,9 @@
 version: '3'
 services:
   maw-db:
-    image: mariadb:10.7.3
+    image: ghcr.io/azuki774/mawinter-db:latest
     restart: always
     container_name: mawinter-db
-    command:
-      - mysqld
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
     ports:
       - "3306:3306"
     environment:
@@ -22,7 +18,7 @@ services:
     image: ghcr.io/azuki774/mawinter-api:latest
     container_name: mawinter-api
     ports:
-      - "8888:80"
+      - "8888:8080"
     environment:
       - MYSQL_DATABASE=mawinter
       - BASIC_AUTH_USERNAME=test
