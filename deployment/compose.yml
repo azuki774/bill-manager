@@ -1,12 +1,7 @@
 version: '3'
 services:
-  api:
-    image: azuki774/bill-manager-api
-    container_name: bill-manager-api
-    restart: always
-
   db:
-    image: azuki774/bill-manager-db
+    image: bill-manager-db
     container_name: bill-manager-db
     restart: always
     environment:
@@ -16,23 +11,13 @@ services:
       TZ: Asia/Tokyo
       LANG: C.UTF-8
 
-  fetcher:
-    image: azuki774/bill-manager-fetcher
-    container_name: bill-manager-fetcher
-    restart: always
-    env_file:
-      - fetcher-token.env
-    environment:
-      fetcher_stub: 1 # 0 .. fetch, 1 .. for development (not fetch actually)
-      start_wait: 10
-
   mawinter-client:
-    image: azuki774/bill-manager-mawinter
+    image: bill-manager-mawinter
     container_name: bill-manager-mawinter
     restart: always
 
   twitter-client:
-    image: azuki774/bill-manager-twitter
+    image: bill-manager-twitter
     container_name: bill-manager-twitter
     restart: always
     env_file:
