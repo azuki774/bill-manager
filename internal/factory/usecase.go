@@ -3,8 +3,8 @@ package factory
 import (
 	"fmt"
 
-	"github.com/azuki774/bill-manager/internal/repository"
-	"github.com/azuki774/bill-manager/internal/usecases"
+	"azuki774/bill-manager/internal/repository"
+	"azuki774/bill-manager/internal/usecases"
 )
 
 func NewUsecaseMawinter(h *repository.HTTPClient, f *repository.FileLoader) (u *usecases.UsecaseMawinter, err error) {

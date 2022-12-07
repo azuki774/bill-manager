@@ -3,7 +3,7 @@ package usecases
 import (
 	"context"
 
-	"github.com/azuki774/bill-manager/internal/model"
+	"azuki774/bill-manager/internal/model"
 )
 
 type MockHTTPClient struct {

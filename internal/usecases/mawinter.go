@@ -6,7 +6,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/azuki774/bill-manager/internal/model"
+	"azuki774/bill-manager/internal/model"
 	"go.uber.org/zap"
 )
 
