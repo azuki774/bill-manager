@@ -2,6 +2,10 @@ package model
 
 import "time"
 
+func (ElectConsumption) TableName() string {
+	return "elect_consumption"
+}
+
 type ElectConsumption struct {
 	ID               int64     `gorm:"id,primaryKey"`
 	RecordDate       string    `gorm:"column:record_date,index,not null,unique"` // YYYYMMDD
