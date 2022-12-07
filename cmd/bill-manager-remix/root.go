@@ -3,13 +3,12 @@ package main
 import (
 	"os"
 
-	"github.com/azuki774/bill-manager/internal/api"
 	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "bill-manager-api",
+	Use:   "bill-manager-remix",
 	Short: "A brief description of your application",
 	Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
@@ -19,9 +18,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return api.Start()
-	},
+	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -38,7 +35,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.bill-manager.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sbi-port-admin.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

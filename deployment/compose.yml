@@ -1,38 +1,28 @@
 version: '3'
 services:
-  api:
-    image: azuki774/bill-manager-api
-    container_name: bill-manager-api
-    restart: always
-
   db:
-    image: azuki774/bill-manager-db
+    image: mariadb:10.9
     container_name: bill-manager-db
     restart: always
+    container_name: bill-manager-db
+    command:
+      - mysqld
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: billmanager
-      MYSQL_HOST: bill-manager-db
-      MYSQL_DATABASE: BILLMANAGER
-      TZ: Asia/Tokyo
-      LANG: C.UTF-8
-
-  fetcher:
-    image: azuki774/bill-manager-fetcher
-    container_name: bill-manager-fetcher
-    restart: always
-    env_file:
-      - fetcher-token.env
-    environment:
-      fetcher_stub: 1 # 0 .. fetch, 1 .. for development (not fetch actually)
-      start_wait: 10
+      - MYSQL_DATABASE=billmanager
+      - MYSQL_ROOT_PASSWORD=password
+      - TZ=Asia/Tokyo
 
   mawinter-client:
-    image: azuki774/bill-manager-mawinter
+    image: bill-manager-mawinter
     container_name: bill-manager-mawinter
     restart: always
 
   twitter-client:
-    image: azuki774/bill-manager-twitter
+    image: bill-manager-twitter
     container_name: bill-manager-twitter
     restart: always
     env_file:

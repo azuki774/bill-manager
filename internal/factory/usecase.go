@@ -3,20 +3,27 @@ package factory
 import (
 	"fmt"
 
-	"github.com/azuki774/bill-manager/internal/repository"
-	"github.com/azuki774/bill-manager/internal/usecases"
+	"azuki774/bill-manager/internal/mawinter"
+	"azuki774/bill-manager/internal/remix"
+	"azuki774/bill-manager/internal/repository"
+
+	"go.uber.org/zap"
 )
 
-func NewUsecaseMawinter(h *repository.HTTPClient, f *repository.FileLoader) (u *usecases.UsecaseMawinter, err error) {
+func NewUsecaseMawinter(h *repository.HTTPClient, f *repository.FileLoader) (u *mawinter.UsecaseMawinter, err error) {
 	l, err := NewLogger()
 	if err != nil {
 		fmt.Printf("failed to get logger: %v\n", err)
 		return nil, err
 	}
 
-	return &usecases.UsecaseMawinter{Logger: l, HTTPClient: h, FileLoader: f}, nil
+	return &mawinter.UsecaseMawinter{Logger: l, HTTPClient: h, FileLoader: f}, nil
 }
 
 func NewFileLoader() *repository.FileLoader {
 	return &repository.FileLoader{}
+}
+
+func NewUsecaseRemix(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader) (r *remix.Importer) {
+	return &remix.Importer{Logger: l, FileLoader: f, DBRepository: d}
 }

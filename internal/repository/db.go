@@ -1,44 +1,42 @@
 package repository
 
 import (
-	"fmt"
+	"azuki774/bill-manager/internal/model"
+	"errors"
 
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func makeDsn(dbAddr string, dbUserName string, dbUserPass string, dbName string) (dsn string) {
-	dsn = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUserName, dbUserPass, dbAddr, dbName)
-	return dsn
+type DBRepository struct {
+	Conn *gorm.DB
 }
 
-func DBConnect(dbAddr string, dbUserName string, dbUserPass string, dbName string) (*gorm.DB, error) {
-	logger.Debugw("DB settings", "dbAddr", dbAddr, "dbUserName", dbUserName, "dbPass", dbUserPass, "dbName", dbName)
-	dsn := makeDsn(dbAddr, dbUserName, dbUserPass, dbName)
-	logger.Infow("make dsn", "dsn", dsn)
-	ndb, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+func (d *DBRepository) CloseDB() (err error) {
+	dbconn, err := d.Conn.DB()
 	if err != nil {
-		logger.Errorw("failed to connect database", "error", err)
-		return nil, err
+		return err
+	}
+	return dbconn.Close()
+}
+
+// AddElectConsumption inserts elect_consumption without overwriting.
+func (d *DBRepository) AddElectConsumption(record model.ElectConsumption) (err error) {
+	recordDate := record.RecordDate
+	err = d.Conn.Where("record_date = ?", recordDate).Take(&record).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		// not found -> ok
+	} else if err != nil {
+		// internal error
+		return err
+	} else {
+		// record exists
+		return nil
 	}
 
-	logger.Infow("connect to the database")
-	return ndb, nil
-}
-
-func DBClose(db *gorm.DB) error {
-	cdb, err := db.DB()
+	err = d.Conn.Create(&record).Error
 	if err != nil {
-		logger.Errorw("database close error", "error", err)
 		return err
 	}
 
-	err = cdb.Close()
-	if err != nil {
-		logger.Errorw("database close error", "error", err)
-		return err
-	}
-
-	logger.Infow("database close")
 	return nil
 }

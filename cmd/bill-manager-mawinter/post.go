@@ -4,7 +4,8 @@ import (
 	"context"
 	"os"
 
-	"github.com/azuki774/bill-manager/internal/factory"
+	"azuki774/bill-manager/internal/factory"
+
 	"github.com/spf13/cobra"
 )
 
