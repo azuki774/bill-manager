@@ -32,7 +32,7 @@ func (i *Importer) Start(ctx context.Context) (err error) {
 
 	i.Logger.Info("import start", zap.String("target_date", i.Date))
 
-	dir := fetcherDir + i.Date[0:6] + i.Date + ".csv"
+	dir := fetcherDir + i.Date[0:6] + "/" + i.Date + ".csv"
 	rrecs, err := i.FileLoader.LoadRemixElectConsumptionCSV(ctx, dir)
 	if err != nil {
 		i.Logger.Error("failed to load remix CSV", zap.Error(err))
