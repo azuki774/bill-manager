@@ -58,6 +58,19 @@ func TestNewRemixCSV(t *testing.T) {
 			wantR:   RemixCSV{},
 			wantErr: true,
 		},
+		{
+			name: "not provided",
+			args: args{
+				row: []string{
+					"2022/12/01",
+					"-",
+					"-",
+					"-",
+				},
+			},
+			wantR:   RemixCSV{},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

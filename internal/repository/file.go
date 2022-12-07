@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/csv"
 	"encoding/json"
+	"errors"
 	"io"
 	"os"
 
@@ -49,7 +50,10 @@ func (f *FileLoader) LoadRemixElectConsumptionCSV(ctx context.Context, filePath 
 	for _, row := range rows {
 		// []string -> struct
 		rec, err := model.NewRemixCSV(row)
-		if err != nil {
+		if err != nil && errors.Is(err, model.ErrNotProvided) {
+			continue
+		} else if err != nil {
+			// internal error
 			return []model.RemixCSV{}, err
 		}
 

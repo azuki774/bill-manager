@@ -7,6 +7,7 @@ import (
 )
 
 var ErrInvalidData = errors.New("invalid data")
+var ErrNotProvided = errors.New("not provided")
 
 type RemixCSV struct {
 	RecordDate       string // YYYY-MM-DD
@@ -16,10 +17,16 @@ type RemixCSV struct {
 }
 
 func NewRemixCSV(row []string) (r RemixCSV, err error) {
+	// 未計測(-) の値は ErrNotProvided を返す
 	if len(row) != 4 {
 		return RemixCSV{}, ErrInvalidData
 	}
 	r.RecordDate = row[0]
+
+	if row[1] == "-" {
+		return RemixCSV{}, ErrNotProvided
+	}
+
 	r.TotalConsumption, err = strconv.Atoi(row[1])
 	if err != nil {
 		return RemixCSV{}, ErrInvalidData
