@@ -1,4 +1,4 @@
-module github.com/azuki774/bill-manager
+module azuki774/bill-manager
 
 go 1.18
 

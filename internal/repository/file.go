@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/azuki774/bill-manager/internal/model"
+	"azuki774/bill-manager/internal/model"
 )
 
 type FileLoader struct{}

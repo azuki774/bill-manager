@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/azuki774/bill-manager/internal/model"
+	"azuki774/bill-manager/internal/model"
 )
 
 func TestFileLoader_LoadRecordsFromJSON(t *testing.T) {

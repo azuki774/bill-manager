@@ -1,7 +1,7 @@
 package factory
 
 import (
-	"github.com/azuki774/bill-manager/internal/repository"
+	"azuki774/bill-manager/internal/repository"
 )
 
 type HTTPClientInfo struct {

@@ -1,4 +1,4 @@
-package usecases
+package mawinter
 
 import (
 	"context"
@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/azuki774/bill-manager/internal/model"
+	"azuki774/bill-manager/internal/model"
+
 	"go.uber.org/zap"
 )
 
