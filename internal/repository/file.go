@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"encoding/csv"
 	"encoding/json"
 	"io/ioutil"
 	"os"
@@ -33,5 +34,27 @@ func (f *FileLoader) LoadRecordsFromJSON(ctx context.Context, filePath string) (
 		rec.FromInCreateRecord(ctx, &inc)
 		recs = append(recs, rec)
 	}
+	return recs, nil
+}
+
+func (f *FileLoader) LoadElectConsumptionCSV(ctx context.Context, filePath string) (recs []model.RemixCSV, err error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return recs, err
+	}
+	defer file.Close()
+
+	r := csv.NewReader(file)
+	rows, err := r.ReadAll() // csvを一度に全て読み込む
+	for _, row := range rows {
+		// []string -> struct
+		rec, err := model.NewRemixCSV(row)
+		if err != nil {
+			return []model.RemixCSV{}, err
+		}
+
+		recs = append(recs, rec)
+	}
+
 	return recs, nil
 }
