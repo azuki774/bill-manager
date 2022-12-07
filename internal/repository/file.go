@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/csv"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"os"
 
 	"azuki774/bill-manager/internal/model"
@@ -18,7 +18,7 @@ func (f *FileLoader) LoadRecordsFromJSON(ctx context.Context, filePath string) (
 		return recs, err
 	}
 
-	contentBin, err := ioutil.ReadAll(content)
+	contentBin, err := io.ReadAll(content)
 	if err != nil {
 		return recs, err
 	}
@@ -37,7 +37,7 @@ func (f *FileLoader) LoadRecordsFromJSON(ctx context.Context, filePath string) (
 	return recs, nil
 }
 
-func (f *FileLoader) LoadElectConsumptionCSV(ctx context.Context, filePath string) (recs []model.RemixCSV, err error) {
+func (f *FileLoader) LoadRemixElectConsumptionCSV(ctx context.Context, filePath string) (recs []model.RemixCSV, err error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return recs, err
