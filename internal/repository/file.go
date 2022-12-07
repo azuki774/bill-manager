@@ -47,8 +47,12 @@ func (f *FileLoader) LoadRemixElectConsumptionCSV(ctx context.Context, filePath 
 
 	r := csv.NewReader(file)
 	rows, err := r.ReadAll() // csvを一度に全て読み込む
-	for _, row := range rows {
+	for i, row := range rows {
 		// []string -> struct
+		if i == 0 {
+			// 1行目は 取得年月日,使用量合計(kWh),昼時間使用量(kWh),夜時間使用量(kWh) なので読み飛ばす
+			continue
+		}
 		rec, err := model.NewRemixCSV(row)
 		if err != nil && errors.Is(err, model.ErrNotProvided) {
 			continue
