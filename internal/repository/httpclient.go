@@ -3,7 +3,7 @@ package repository
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 )
@@ -34,7 +34,7 @@ func (c *HTTPClient) PostJson(ctx context.Context, endPoint string, reqBody []by
 	}
 	defer res.Body.Close()
 
-	resBody, err = ioutil.ReadAll(res.Body)
+	resBody, err = io.ReadAll(res.Body)
 	if err != nil {
 		return []byte{}, 0, err
 	}
