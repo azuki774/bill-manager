@@ -1,5 +1,5 @@
 FROM python:alpine
 LABEL description="bill-manager-twitter"
-RUN python -m pip install --upgrade pip && python -m pip install tweepy && python -m pip install grpcio && python -m pip install protobuf
+RUN python -m pip install --upgrade pip && python -m pip install tweepy && pip install mysql-connector-python==8.0.29
 COPY twclient/ /src/
 ENTRYPOINT ["python3", "-u", "/src/main.py"]
