@@ -24,9 +24,10 @@ services:
   twitter-client:
     image: bill-manager-twitter
     container_name: bill-manager-twitter
-    restart: always
     env_file:
       - tw-token.env
     environment:
-      twitter_stub: 1 # 0 .. send to Twitter, 1 .. for development (not send actually)
-      start_wait: 20
+      only_print_debug: 1
+      db_host: bill-manager-db
+      db_user: root
+      db_pass: password

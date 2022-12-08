@@ -1,10 +1,9 @@
 import time
 import tweepy
 import os
-import grpcconn
+import sys
 import datetime
-
-wait_time = 0
+import mysql.connector
 
 
 def getClient():
@@ -16,57 +15,53 @@ def getClient():
     )
     return client
 
+def fetch_from_db(yyyymmdd):
+    db_host=os.environ["db_host"]
+    db_user=os.environ["db_user"]
+    db_pass=os.environ["db_pass"]
+    conn = mysql.connector.connect(host=db_host ,user=db_user, password=db_pass, database='billmanager', use_unicode=True)
+    cur = conn.cursor(buffered=True)
+    sql = 'SELECT * FROM elect_consumption WHERE record_date = "{}" LIMIT 1'.format(yyyymmdd)
+    print(sql)
+    cur.execute(sql)
+ 
+    # 全てのデータを取得
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return rows[0]
 
-def makeTweetText(daytime, nighttime, total):
+def makeTweetText(total, daytime, nighttime):
     today = datetime.datetime.now() + datetime.timedelta(hours=9)
     yesterday = today - datetime.timedelta(1)
     yesterdayString = yesterday.strftime("%Y-%m-%d")
     text = ""
     text += "@azuki774s\n"
     text += yesterdayString + " の電力消費量は\n"
+    text += "合計:" + str(total) + " Wh\n"
     text += "昼間:" + str(daytime) + " Wh\n"
     text += "夜間:" + str(nighttime) + " Wh\n"
-    text += "合計:" + str(total) + " Wh\n"
     return text
 
-
-def get_start_time():
-    return int(os.environ.get("start_wait", "0"))
-
-
 if __name__ == "__main__":
-    wait_time = get_start_time()
-    print("wait for " + str(wait_time) + "sec")
-    time.sleep(wait_time)  # wait for other components
+    today = datetime.datetime.now() + datetime.timedelta(hours=9)
+    yesterday = today - datetime.timedelta(1)
+    yyyymmdd = yesterday.strftime("%Y-%m-%d")
+    res = fetch_from_db(yyyymmdd=yyyymmdd)
 
-    print("get target date")
-    targetDate = grpcconn.get_targetDay()
-    print(targetDate)
-
-    conn = grpcconn.grpcClient()
-    conn.open()
-    print("grpc connected")
-    res = conn.ElectConsumeGet(targetDate)
-    conn.close()
-
-    if res.total == 0:
-        print("fetch data error")
-        exit(1)
-
-    print("=== make tweetText ===")
-    tweetText = makeTweetText(res.daytime, res.nighttime, res.total)
+    print("make tweetText")
+    tweetText = makeTweetText(res[2], res[3], res[4])
     print(tweetText)
 
-    if os.getenv("twitter_stub") == "0":
-        client = getClient()
-        try:
-            client.create_tweet(text=tweetText)
-            print("tweet in Twitter")
-        except Exception as e:
-            print(e)
-    else:
-        print("tweet in stub")
+    if os.getenv("only_print_debug") != "":
+        print("the program debug end")
+        sys.exit(0)
 
-    print("the program will end after 10 minutes")
-    time.sleep(60 * 10)  # 10min sleep for blocking
+    client = getClient()
+    try:
+        client.create_tweet(text=tweetText)
+        print("tweet in Twitter")
+    except Exception as e:
+        print(e)
+
     print("the program end")
