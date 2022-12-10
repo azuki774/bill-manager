@@ -32,6 +32,8 @@ func (i *Importer) Start(ctx context.Context, target string) (err error) {
 	switch target {
 	case "consume":
 		err = i.startConsume(ctx)
+	case "bill":
+		err = i.startBill(ctx)
 	default:
 		err = fmt.Errorf("invalid target args")
 	}
