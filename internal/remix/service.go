@@ -16,7 +16,7 @@ type FileLoader interface {
 	LoadRemixElectConsumptionCSV(ctx context.Context, filePath string) (recs []model.RemixCSV, err error)
 }
 
-const fetcherDir = "/root/fetcher/"
+const fetcherDir = "/root/fetcher/remix/"
 
 type Importer struct {
 	Logger       *zap.Logger
