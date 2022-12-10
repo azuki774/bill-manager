@@ -100,6 +100,16 @@ func TestFileLoader_LoadRemixElectConsumptionCSV(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "not found",
+			args: args{
+				ctx:      context.Background(),
+				filePath: "../../test/dataXXX.csv",
+			},
+			f:        &FileLoader{},
+			wantRecs: []model.RemixCSV{},
+			wantErr:  true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -111,6 +121,79 @@ func TestFileLoader_LoadRemixElectConsumptionCSV(t *testing.T) {
 			}
 			if !reflect.DeepEqual(gotRecs, tt.wantRecs) {
 				t.Errorf("FileLoader.LoadRemixElectConsumptionCSV() = %v, want %v", gotRecs, tt.wantRecs)
+			}
+		})
+	}
+}
+
+func TestFileLoader_LoadRemixElectBillCSV(t *testing.T) {
+	type args struct {
+		ctx      context.Context
+		filePath string
+	}
+	tests := []struct {
+		name     string
+		f        *FileLoader
+		args     args
+		wantRecs []model.RemixBillingCSV
+		wantErr  bool
+	}{
+		{
+			name: "ok",
+			args: args{
+				ctx:      context.Background(),
+				filePath: "../../test/data2.csv",
+			},
+			f: &FileLoader{},
+			wantRecs: []model.RemixBillingCSV{
+				{
+					BillingMonth:       "2022年11月分",
+					ContractNumber:     "PP21SSSSSSSSSSSSS",
+					ProvidePointNumber: "0300111XXXXXXXXXXXXXXX",
+					FacilityName:       "ばしょ3",
+					TotalConsumption:   202,
+					Price:              "7,802",
+				},
+				{
+					BillingMonth:       "2022年10月分",
+					ContractNumber:     "PP21SSSSSSSSSSSSS",
+					ProvidePointNumber: "0300111XXXXXXXXXXXXXXX",
+					FacilityName:       "ばしょ2",
+					TotalConsumption:   239,
+					Price:              "8,826",
+				},
+				{
+					BillingMonth:       "2022年09月分",
+					ContractNumber:     "PP21SSSSSSSSSSSSS",
+					ProvidePointNumber: "0300111XXXXXXXXXXXXXXX",
+					FacilityName:       "ばしょ1",
+					TotalConsumption:   297,
+					Price:              "10,486",
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "not found",
+			args: args{
+				ctx:      context.Background(),
+				filePath: "../../test/data2XXX.csv",
+			},
+			f:        &FileLoader{},
+			wantRecs: []model.RemixBillingCSV{},
+			wantErr:  true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			f := &FileLoader{}
+			gotRecs, err := f.LoadRemixElectBillCSV(tt.args.ctx, tt.args.filePath)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("FileLoader.LoadRemixElectBillCSV() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(gotRecs, tt.wantRecs) {
+				t.Errorf("FileLoader.LoadRemixElectBillCSV() = %v, want %v", gotRecs, tt.wantRecs)
 			}
 		})
 	}
