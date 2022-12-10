@@ -3,6 +3,7 @@ package remix
 import (
 	"azuki774/bill-manager/internal/model"
 	"context"
+	"fmt"
 	"time"
 
 	"go.uber.org/zap"
@@ -25,7 +26,18 @@ type Importer struct {
 	Date         string // YYYYMMDD
 }
 
-func (i *Importer) Start(ctx context.Context) (err error) {
+func (i *Importer) Start(ctx context.Context, target string) (err error) {
+	switch target {
+	case "consume":
+		err = i.startConsume(ctx)
+	default:
+		err = fmt.Errorf("invalid target args")
+	}
+
+	return err
+}
+
+func (i *Importer) startConsume(ctx context.Context) (err error) {
 	if i.Date == "" {
 		i.Date = time.Now().Format("20060102")
 	}

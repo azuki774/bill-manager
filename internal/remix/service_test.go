@@ -18,7 +18,7 @@ func init() {
 	l.WithOptions(zap.AddStacktrace(zap.ErrorLevel))
 }
 
-func TestImporter_Start(t *testing.T) {
+func TestImporter_startConsume(t *testing.T) {
 	type fields struct {
 		Logger       *zap.Logger
 		DBRepository DBRepository
@@ -76,7 +76,7 @@ func TestImporter_Start(t *testing.T) {
 				FileLoader:   tt.fields.FileLoader,
 				Date:         tt.fields.Date,
 			}
-			if err := i.Start(tt.args.ctx); (err != nil) != tt.wantErr {
+			if err := i.startConsume(tt.args.ctx); (err != nil) != tt.wantErr {
 				t.Errorf("Importer.Start() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

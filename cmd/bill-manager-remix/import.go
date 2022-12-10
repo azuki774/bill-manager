@@ -23,14 +23,10 @@ var startOpt startOption
 
 // loadCmd represents the load command
 var importCmd = &cobra.Command{
-	Use:   "import",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:          "import",
+	Short:        "リミックスでんきの請求CSVをDBに登録する",
 	SilenceUsage: false,
+	Args:         cobra.MinimumNArgs(1), // consume or bill
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		ctx := context.Background()
 		lg, err := factory.NewLogger()
@@ -46,7 +42,7 @@ to quickly create a Cobra application.`,
 
 		fl := factory.NewFileLoader()
 		ip := factory.NewUsecaseRemix(lg, d, fl)
-		return ip.Start(ctx)
+		return ip.Start(ctx, args[0])
 	},
 }
 
