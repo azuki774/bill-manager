@@ -2,6 +2,7 @@ package repository
 
 import (
 	"azuki774/bill-manager/internal/model"
+	"context"
 	"errors"
 
 	"gorm.io/gorm"
@@ -61,4 +62,13 @@ func (d *DBRepository) AddElectBill(record model.BillElect) (err error) {
 	}
 
 	return nil
+}
+
+func (d *DBRepository) GetElectBillFromDB(ctx context.Context, billingMonth string) (price int, err error) {
+	var record model.BillElect
+	err = d.Conn.Where("billing_month = ?", billingMonth).Take(&record).Error
+	if err != nil {
+		return 0, err
+	}
+	return int(record.Price), nil
 }
