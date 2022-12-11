@@ -43,3 +43,12 @@ func (c *CreateRecord) FromInCreateRecord(ctx context.Context, inc *InCreateReco
 		c.Date = GetYYYYMM(ctx) + inc.Day
 	}
 }
+
+func NewElectCreateRecord(price int) (r CreateRecord) {
+	r = CreateRecord{
+		CategoryID: 220, // 電気代
+		Price:      int64(price),
+		From:       "bill-manager-mawinter",
+	}
+	return r
+}

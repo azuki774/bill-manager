@@ -24,3 +24,14 @@ type MockFileLoader struct {
 func (m MockFileLoader) LoadRecordsFromJSON(ctx context.Context, filePath string) (recs []model.CreateRecord, err error) {
 	return m.recs, m.err
 }
+
+type MockDBRepository struct {
+	err error
+}
+
+func (m MockDBRepository) GetElectBillFromDB(ctx context.Context, billingMonth string) (price int, err error) {
+	if m.err != nil {
+		return 0, m.err
+	}
+	return 1000, nil
+}

@@ -13,13 +13,8 @@ var HTTPClientInfo factory.HTTPClientInfo
 
 // loadCmd represents the load command
 var registCmd = &cobra.Command{
-	Use:   "post",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:          "post",
+	Short:        "JSONファイルを元に mawinter-api にデータを送信する",
 	Args:         cobra.MinimumNArgs(1),
 	SilenceUsage: false,
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
