@@ -39,6 +39,7 @@ var importCmd = &cobra.Command{
 			fmt.Println(err)
 			return err
 		}
+		defer d.CloseDB()
 
 		fl := factory.NewFileLoader()
 		ip := factory.NewUsecaseRemix(lg, d, fl)
