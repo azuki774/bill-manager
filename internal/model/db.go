@@ -7,7 +7,7 @@ func (ElectConsumption) TableName() string {
 }
 
 func (BillElect) TableName() string {
-	return "bili_elect"
+	return "bill_elect"
 }
 
 type ElectConsumption struct {
