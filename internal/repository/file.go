@@ -103,3 +103,8 @@ func (f *FileLoader) LoadRemixElectBillCSV(ctx context.Context, filePath string)
 
 	return recs, nil
 }
+
+func (f *FileLoader) LoadWaterBillCSV(ctx context.Context, dir string) (recs []model.WaterBillingCSV, err error) {
+	// TODO
+	return recs, nil
+}

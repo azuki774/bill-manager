@@ -2,6 +2,7 @@ package factory
 
 import (
 	"fmt"
+	"os"
 
 	"azuki774/bill-manager/internal/downloader"
 	"azuki774/bill-manager/internal/mawinter"
@@ -27,7 +28,7 @@ func NewFileLoader() *repository.FileLoader {
 }
 
 func NewSFTPDownloader() *downloader.SFTPClient {
-	return &downloader.SFTPClient{}
+	return &downloader.SFTPClient{Host: os.Getenv("SRC_HOST")}
 }
 
 func NewUsecaseRemix(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader) (r *remix.Importer) {

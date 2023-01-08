@@ -9,8 +9,7 @@ import (
 )
 
 type importOption struct {
-	SrcHost string
-	DBInfo  struct {
+	DBInfo struct {
 		Host string
 		Port string
 		User string
@@ -50,7 +49,6 @@ var importCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(importCmd)
-	importCmd.Flags().StringVar(&importOpt.SrcHost, "src-host", "localhost", "host saved source CSV (if localhost, it does not download csv")
 	importCmd.Flags().StringVar(&importOpt.Date, "date", "", "YYYYMMDD")
 
 	importCmd.Flags().StringVar(&importOpt.DBInfo.Host, "db-host", "bill-manager-db", "DB Host")
