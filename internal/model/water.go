@@ -3,15 +3,48 @@ package model
 import (
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/goark/koyomi"
 )
+
+var jst *time.Location
+
+func init() {
+	j, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		panic(err)
+	}
+	jst = j
+}
 
 type WaterBillingCSV struct {
 	BillingMonth     string // 請求年月：4年12月 ～ 5年1月分
 	Price            string // 料金： "3,951"
-	UsageTerm        string // 利用期間：,11月 2日 ～  1月 4日 (64日間)
+	UsageTerm        string // 利用期間：11月 2日 ～  1月 4日 (64日間)
 	Consumption      string // 使用量：16
 	DetailWaterPrice string // 内訳料金（水道）："2,719"
 	DetailSewerPrice string // 内訳料金（下水道）："2,719"
+}
+
+const nowGengo = "令和"
+
+// toBillMonthWareki: ex. 5年1月分 -> 202301
+func toBillMonthWareki(str string) (string, error) {
+	str = strings.Replace(str, "年", ",", -1)
+	str = strings.Replace(str, "月分", "", -1)
+	strL := strings.Split(str, ",")
+
+	year, err := strconv.Atoi(strL[0])
+	if err != nil {
+		return "", err
+	}
+	month, err := strconv.Atoi(strL[1])
+	if err != nil {
+		return "", err
+	}
+	te := koyomi.NewDateEra(koyomi.EraName(nowGengo), year, time.Month(month), 1)
+	return te.Format("200601"), nil
 }
 
 func (w *WaterBillingCSV) NewWaterDBModel() (BillWater, error) {
@@ -23,8 +56,8 @@ func (w *WaterBillingCSV) NewWaterDBModel() (BillWater, error) {
 	w.DetailSewerPrice = strings.Replace(w.DetailSewerPrice, ",", "", -1)
 	w.DetailSewerPrice = strings.Replace(w.DetailSewerPrice, `"`, "", -1)
 
-	// bmList := strings.Split(w.BillingMonth, " ") // 4年12月 ～ 5年1月分 -> [4年12月,～,5年1月分]
-	// bmStr = bmList[len(bmList)-1]                // [4年12月,～,5年1月分] -> 5年1月分
+	bmList := strings.Split(w.BillingMonth, " ") // 4年12月 ～ 5年1月分 -> [4年12月,～,5年1月分]
+	bmStr := bmList[len(bmList)-1]               // [4年12月,～,5年1月分] -> 5年1月分
 
 	price, err := strconv.Atoi(w.Price)
 	if err != nil {
@@ -46,7 +79,11 @@ func (w *WaterBillingCSV) NewWaterDBModel() (BillWater, error) {
 		return BillWater{}, err
 	}
 
-	// bw.BillingMonth =
+	bw.BillingMonth, err = toBillMonthWareki(bmStr)
+	if err != nil {
+		return BillWater{}, err
+	}
+
 	bw.Price = int64(price)
 	bw.Consumption = int64(cons)
 	bw.DetailWaterPrice = int64(detailWater)
