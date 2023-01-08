@@ -15,7 +15,6 @@ CONTAINER_NAME_MAWINTER=bill-manager-mawinter
 
 .PHONY: build start clean stop test rebuild
 build:
-	go build -a -tags "netgo" -installsuffix netgo  -ldflags="-s -w -extldflags \"-static\"" -o build/bin/ ./...
 	docker build -t $(CONTAINER_NAME_REMIX) -f build/dockerfile-remix .
 	docker build -t $(CONTAINER_NAME_TWITTER) -f build/dockerfile-twitter .
 	docker build -t $(CONTAINER_NAME_MAWINTER) -f build/dockerfile-mawinter .

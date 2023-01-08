@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-const fetcherDir = "/root/data.csv"
+const fetcherCSV = "./data.csv"
 
 var jst *time.Location
 
@@ -22,6 +22,7 @@ func init() {
 }
 
 type DBRepository interface {
+	AddWaterBill(r model.BillWater) (err error)
 }
 type FileLoader interface {
 	LoadWaterBillCSV(ctx context.Context, dir string) (recs []model.WaterBillingCSV, err error)
@@ -51,14 +52,34 @@ func (w *WaterService) Import(ctx context.Context) (err error) {
 	w.getEnvValue()
 	w.Logger.Info("import start", zap.String("date", w.Date))
 
-	remoteDir := w.remoteRootDir + w.Date[0:6] + "/" + w.Date + ".csv"
-	err = w.Downloader.Download(ctx, fetcherDir, remoteDir)
+	remoteDir := w.remoteRootDir + w.Date[0:6] + "/" + w.Date + ".csv" // ex. /root/fetcher/2023/202301/20230101.csv
+	err = w.Downloader.Download(ctx, fetcherCSV, remoteDir)
 	if err != nil {
 		w.Logger.Error("failed to download CSV", zap.String("remoteDir", remoteDir), zap.Error(err))
 		return err
 	}
 
 	w.Logger.Info("complete download CSV or skipped", zap.String("remoteDir", remoteDir))
+
+	// Assume that CSV file exists in fetcherDir
+	recs, err := w.FileLoader.LoadWaterBillCSV(ctx, fetcherCSV)
+	if err != nil {
+		w.Logger.Error("failed to load CSV", zap.Error(err))
+		return err
+	}
+
+	for _, rec := range recs {
+		r, err := rec.NewWaterDBModel()
+		if err != nil {
+			w.Logger.Error("failed to convert DB model", zap.Error(err))
+			return err
+		}
+		err = w.DBRepository.AddWaterBill(r)
+		if err != nil {
+			w.Logger.Error("failed to insert DB", zap.Error(err))
+			return err
+		}
+	}
 
 	return nil
 }

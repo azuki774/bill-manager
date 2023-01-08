@@ -62,3 +62,9 @@ func (d *DBRepository) AddElectBill(record model.BillElect) (err error) {
 
 	return nil
 }
+
+// AddWaterBill inserts bill_water without overwriting.
+func (d *DBRepository) AddWaterBill(r model.BillWater) (err error) {
+	// TODO
+	return nil
+}
