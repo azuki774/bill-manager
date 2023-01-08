@@ -3,9 +3,11 @@ package factory
 import (
 	"fmt"
 
+	"azuki774/bill-manager/internal/downloader"
 	"azuki774/bill-manager/internal/mawinter"
 	"azuki774/bill-manager/internal/remix"
 	"azuki774/bill-manager/internal/repository"
+	"azuki774/bill-manager/internal/water"
 
 	"go.uber.org/zap"
 )
@@ -24,6 +26,14 @@ func NewFileLoader() *repository.FileLoader {
 	return &repository.FileLoader{}
 }
 
+func NewSFTPDownloader() *downloader.SFTPClient {
+	return &downloader.SFTPClient{}
+}
+
 func NewUsecaseRemix(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader) (r *remix.Importer) {
 	return &remix.Importer{Logger: l, FileLoader: f, DBRepository: d}
+}
+
+func NewUsecaseWater(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader, s *downloader.SFTPClient, date string) (u *water.WaterService) {
+	return &water.WaterService{Logger: l, DBRepository: d, FileLoader: f, Downloader: s, Date: date}
 }
