@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"azuki774/bill-manager/internal/downloader"
+	"azuki774/bill-manager/internal/gas"
 	"azuki774/bill-manager/internal/mawinter"
 	"azuki774/bill-manager/internal/remix"
 	"azuki774/bill-manager/internal/repository"
@@ -37,4 +38,8 @@ func NewUsecaseRemix(l *zap.Logger, d *repository.DBRepository, f *repository.Fi
 
 func NewUsecaseWater(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader, date string) (u *water.WaterService) {
 	return &water.WaterService{Logger: l, DBRepository: d, FileLoader: f, Date: date}
+}
+
+func NewUsecaseGas(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader, date string) (u *gas.GasService) {
+	return &gas.GasService{Logger: l, DBRepository: d, FileLoader: f, Date: date}
 }

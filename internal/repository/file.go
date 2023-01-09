@@ -132,3 +132,32 @@ func (f *FileLoader) LoadWaterBillCSV(ctx context.Context, dir string) (recs []m
 
 	return recs, nil
 }
+
+func (f *FileLoader) LoadGasBillCSV(ctx context.Context, dir string) (recs []model.GasBillingCSV, err error) {
+	file, err := os.Open(dir)
+	if err != nil {
+		return []model.GasBillingCSV{}, err
+	}
+	defer file.Close()
+
+	r := csv.NewReader(file)
+	rows, err := r.ReadAll() // csvを一度に全て読み込む
+	if err != nil {
+		return []model.GasBillingCSV{}, err
+	}
+
+	for _, row := range rows {
+		// []string -> struct
+		rec, err := model.NewGasBillingCSV(row)
+		if err != nil && errors.Is(err, model.ErrNotProvided) {
+			continue
+		} else if err != nil {
+			// internal error
+			return []model.GasBillingCSV{}, err
+		}
+
+		recs = append(recs, rec)
+	}
+
+	return recs, nil
+}
