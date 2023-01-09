@@ -14,6 +14,10 @@ func (BillWater) TableName() string {
 	return "bill_water"
 }
 
+func (BillGas) TableName() string {
+	return "bill_gas"
+}
+
 type ElectConsumption struct {
 	ID               int64     `gorm:"column:id"`
 	RecordDate       string    `gorm:"column:record_date"` // YYYYMMDD
@@ -42,4 +46,13 @@ type BillWater struct {
 	DetailSewerPrice int64     `gorm:"column:detail_sewer_price"`
 	CreatedAt        time.Time `gorm:"column:created_at"`
 	UpdatedAt        time.Time `gorm:"column:updated_at"`
+}
+
+type BillGas struct {
+	ID           int64     `gorm:"column:id"`
+	BillingMonth string    `gorm:"column:billing_month"` // YYYYMMDD
+	Price        int64     `gorm:"column:price"`
+	Consumption  int64     `gorm:"column:consumption"`
+	CreatedAt    time.Time `gorm:"column:created_at"`
+	UpdatedAt    time.Time `gorm:"column:updated_at"`
 }
