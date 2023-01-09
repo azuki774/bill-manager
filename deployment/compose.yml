@@ -16,18 +16,23 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - TZ=Asia/Tokyo
 
-  mawinter-client:
-    image: bill-manager-mawinter
-    container_name: bill-manager-mawinter
-    restart: always
+  bill-manager-water:
+    image: bill-manager-water
+    container_name: bill-manager-water
+    volumes:
+      - ./:/root/fetcher/water/
+  # mawinter-client:
+  #   image: bill-manager-mawinter
+  #   container_name: bill-manager-mawinter
+  #   restart: always
 
-  twitter-client:
-    image: bill-manager-twitter
-    container_name: bill-manager-twitter
-    env_file:
-      - tw-token.env
-    environment:
-      only_print_debug: 1
-      db_host: bill-manager-db
-      db_user: root
-      db_pass: password
+  # twitter-client:
+  #   image: bill-manager-twitter
+  #   container_name: bill-manager-twitter
+  #   env_file:
+  #     - tw-token.env
+  #   environment:
+  #     only_print_debug: 1
+  #     db_host: bill-manager-db
+  #     db_user: root
+  #     db_pass: password
