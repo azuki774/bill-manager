@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -43,5 +44,18 @@ func (g *GasBillingCSV) NewGasDBModel() (BillGas, error) {
 		BillingMonth: t.Format("200601"),
 		Price:        int64(price),
 		Consumption:  int64(cons),
+	}, nil
+}
+
+func NewGasBillingCSV(row []string) (rec GasBillingCSV, err error) {
+	if len(row) != 4 {
+		return GasBillingCSV{}, fmt.Errorf("invalid data")
+	}
+
+	return GasBillingCSV{
+		UsageMonthText: row[0],
+		Price:          row[1],
+		Consumption:    row[2],
+		// 支払い状況は取り込まない
 	}, nil
 }
