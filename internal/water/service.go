@@ -64,5 +64,6 @@ func (w *WaterService) Import(ctx context.Context) (err error) {
 		}
 	}
 
+	w.Logger.Info("complete water bill recorded", zap.String("target_date", w.Date))
 	return nil
 }

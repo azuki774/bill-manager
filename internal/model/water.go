@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -79,4 +80,19 @@ func (w *WaterBillingCSV) NewWaterDBModel() (BillWater, error) {
 	bw.DetailWaterPrice = int64(detailWater)
 	bw.DetailSewerPrice = int64(detailSewer)
 	return bw, nil
+}
+
+func NewWaterBillingCSV(row []string) (rec WaterBillingCSV, err error) {
+	if len(row) != 6 {
+		return WaterBillingCSV{}, fmt.Errorf("invalid data")
+	}
+
+	return WaterBillingCSV{
+		BillingMonth:     row[0],
+		Price:            row[1],
+		UsageTerm:        row[2],
+		Consumption:      row[3],
+		DetailWaterPrice: row[4],
+		DetailSewerPrice: row[5],
+	}, nil
 }

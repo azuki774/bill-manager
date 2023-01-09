@@ -105,6 +105,30 @@ func (f *FileLoader) LoadRemixElectBillCSV(ctx context.Context, filePath string)
 }
 
 func (f *FileLoader) LoadWaterBillCSV(ctx context.Context, dir string) (recs []model.WaterBillingCSV, err error) {
-	// TODO
+	file, err := os.Open(dir)
+	if err != nil {
+		return []model.WaterBillingCSV{}, err
+	}
+	defer file.Close()
+
+	r := csv.NewReader(file)
+	rows, err := r.ReadAll() // csvを一度に全て読み込む
+	if err != nil {
+		return []model.WaterBillingCSV{}, err
+	}
+
+	for _, row := range rows {
+		// []string -> struct
+		rec, err := model.NewWaterBillingCSV(row)
+		if err != nil && errors.Is(err, model.ErrNotProvided) {
+			continue
+		} else if err != nil {
+			// internal error
+			return []model.WaterBillingCSV{}, err
+		}
+
+		recs = append(recs, rec)
+	}
+
 	return recs, nil
 }
