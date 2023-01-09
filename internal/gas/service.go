@@ -1,4 +1,4 @@
-package remix
+package gas
 
 import (
 	"azuki774/bill-manager/internal/model"
