@@ -1,5 +1,6 @@
 # bill-manager
-
+[![Build](https://github.com/azuki774/bill-manager/actions/workflows/build_gotest.yml/badge.svg)](https://github.com/azuki774/bill-manager/actions/workflows/build_gotest.yml)
+[![Build and Publish Docker](https://github.com/azuki774/bill-manager/actions/workflows/image-push.yml/badge.svg)](https://github.com/azuki774/bill-manager/actions/workflows/image-push.yml)
 ## Description
 - スクレイピングで取った各種明細CSVを取り込む
 - APIとしてデータを提供する
