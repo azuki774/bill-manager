@@ -62,3 +62,25 @@ func (d *DBRepository) AddElectBill(record model.BillElect) (err error) {
 
 	return nil
 }
+
+// AddWaterBill inserts bill_water without overwriting.
+func (d *DBRepository) AddWaterBill(r model.BillWater) (err error) {
+	bm := r.BillingMonth
+	err = d.Conn.Where("billing_month = ?", bm).Take(&r).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		// not found -> ok
+	} else if err != nil {
+		// internal error
+		return err
+	} else {
+		// record exists
+		return nil
+	}
+
+	err = d.Conn.Create(&r).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

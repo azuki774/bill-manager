@@ -12,12 +12,13 @@ MAWINTER_SRC=$(CURRENT_DIR)/cmd/bill-mawinter
 CONTAINER_NAME_REMIX=bill-manager-remix
 CONTAINER_NAME_TWITTER=bill-manager-twitter
 CONTAINER_NAME_MAWINTER=bill-manager-mawinter
+CONTAINER_NAME_WATER=bill-manager-water
 
 .PHONY: build start clean stop test rebuild
 build:
-	go build -a -tags "netgo" -installsuffix netgo  -ldflags="-s -w -extldflags \"-static\"" -o build/bin/ ./...
 	docker build -t $(CONTAINER_NAME_REMIX) -f build/dockerfile-remix .
 	docker build -t $(CONTAINER_NAME_TWITTER) -f build/dockerfile-twitter .
+	docker build -t $(CONTAINER_NAME_WATER) -f build/dockerfile-water .
 	docker build -t $(CONTAINER_NAME_MAWINTER) -f build/dockerfile-mawinter .
 
 start:
