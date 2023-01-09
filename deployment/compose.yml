@@ -21,6 +21,13 @@ services:
     container_name: bill-manager-water
     volumes:
       - ./:/root/fetcher/water/
+
+  bill-manager-gas:
+    image: bill-manager-gas
+    container_name: bill-manager-gas
+    volumes:
+      - ./:/root/fetcher/gas/
+
   # mawinter-client:
   #   image: bill-manager-mawinter
   #   container_name: bill-manager-mawinter
