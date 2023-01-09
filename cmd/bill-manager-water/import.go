@@ -49,8 +49,6 @@ var importCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(importCmd)
 	importCmd.Flags().StringVar(&importOpt.Date, "date", "", "YYYYMMDD")
-	// ENV: SRC_HOST
-	// ENV: SRC_REMOTE_DIR
 	importCmd.Flags().StringVar(&importOpt.DBInfo.Host, "db-host", "bill-manager-db", "DB Host")
 	importCmd.Flags().StringVar(&importOpt.DBInfo.Port, "db-port", "3306", "DB Port")
 	importCmd.Flags().StringVar(&importOpt.DBInfo.Name, "db-name", "billmanager", "DB Name")
