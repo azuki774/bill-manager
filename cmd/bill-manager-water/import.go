@@ -41,8 +41,7 @@ var importCmd = &cobra.Command{
 		defer d.CloseDB()
 
 		fl := factory.NewFileLoader()
-		s := factory.NewSFTPDownloader()
-		ap := factory.NewUsecaseWater(lg, d, fl, s, importOpt.Date)
+		ap := factory.NewUsecaseWater(lg, d, fl, importOpt.Date)
 		return ap.Import(ctx)
 	},
 }

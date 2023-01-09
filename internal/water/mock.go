@@ -11,9 +11,6 @@ type mockDBRepository struct {
 type mockFileLoader struct {
 	err error
 }
-type mockDownloader struct {
-	err error
-}
 
 func (m *mockDBRepository) AddWaterBill(r model.BillWater) (err error) {
 	if m.err != nil {
@@ -38,11 +35,4 @@ func (m *mockFileLoader) LoadWaterBillCSV(ctx context.Context, dir string) (recs
 		},
 	}
 	return recs, nil
-}
-
-func (m *mockDownloader) Download(ctx context.Context, dir string, remoteDir string) (err error) {
-	if m.err != nil {
-		return m.err
-	}
-	return nil
 }

@@ -19,12 +19,10 @@ func init() {
 }
 func TestWaterService_Import(t *testing.T) {
 	type fields struct {
-		Logger        *zap.Logger
-		DBRepository  DBRepository
-		FileLoader    FileLoader
-		Date          string
-		Downloader    Downloader
-		remoteRootDir string
+		Logger       *zap.Logger
+		DBRepository DBRepository
+		FileLoader   FileLoader
+		Date         string
 	}
 	type args struct {
 		ctx context.Context
@@ -42,7 +40,6 @@ func TestWaterService_Import(t *testing.T) {
 				DBRepository: &mockDBRepository{},
 				FileLoader:   &mockFileLoader{},
 				Date:         "20230101",
-				Downloader:   &mockDownloader{},
 			},
 			args: args{
 				ctx: context.Background(),
@@ -56,7 +53,6 @@ func TestWaterService_Import(t *testing.T) {
 				DBRepository: &mockDBRepository{err: fmt.Errorf("error")},
 				FileLoader:   &mockFileLoader{},
 				Date:         "20230101",
-				Downloader:   &mockDownloader{},
 			},
 			args: args{
 				ctx: context.Background(),
@@ -70,21 +66,6 @@ func TestWaterService_Import(t *testing.T) {
 				DBRepository: &mockDBRepository{},
 				FileLoader:   &mockFileLoader{err: fmt.Errorf("error")},
 				Date:         "20230101",
-				Downloader:   &mockDownloader{},
-			},
-			args: args{
-				ctx: context.Background(),
-			},
-			wantErr: true,
-		},
-		{
-			name: "download error",
-			fields: fields{
-				Logger:       l,
-				DBRepository: &mockDBRepository{},
-				FileLoader:   &mockFileLoader{},
-				Date:         "20230101",
-				Downloader:   &mockDownloader{err: fmt.Errorf("error")},
 			},
 			args: args{
 				ctx: context.Background(),
@@ -95,12 +76,10 @@ func TestWaterService_Import(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			w := &WaterService{
-				Logger:        tt.fields.Logger,
-				DBRepository:  tt.fields.DBRepository,
-				FileLoader:    tt.fields.FileLoader,
-				Date:          tt.fields.Date,
-				Downloader:    tt.fields.Downloader,
-				remoteRootDir: tt.fields.remoteRootDir,
+				Logger:       tt.fields.Logger,
+				DBRepository: tt.fields.DBRepository,
+				FileLoader:   tt.fields.FileLoader,
+				Date:         tt.fields.Date,
 			}
 			if err := w.Import(tt.args.ctx); (err != nil) != tt.wantErr {
 				t.Errorf("WaterService.Import() error = %v, wantErr %v", err, tt.wantErr)

@@ -8,16 +8,6 @@ import (
 	"github.com/goark/koyomi"
 )
 
-var jst *time.Location
-
-func init() {
-	j, err := time.LoadLocation("Asia/Tokyo")
-	if err != nil {
-		panic(err)
-	}
-	jst = j
-}
-
 type WaterBillingCSV struct {
 	BillingMonth     string // 請求年月：4年12月 ～ 5年1月分
 	Price            string // 料金： "3,951"

@@ -35,6 +35,6 @@ func NewUsecaseRemix(l *zap.Logger, d *repository.DBRepository, f *repository.Fi
 	return &remix.Importer{Logger: l, FileLoader: f, DBRepository: d}
 }
 
-func NewUsecaseWater(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader, s *downloader.SFTPClient, date string) (u *water.WaterService) {
-	return &water.WaterService{Logger: l, DBRepository: d, FileLoader: f, Downloader: s, Date: date}
+func NewUsecaseWater(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader, date string) (u *water.WaterService) {
+	return &water.WaterService{Logger: l, DBRepository: d, FileLoader: f, Date: date}
 }
