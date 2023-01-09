@@ -86,7 +86,7 @@ func (d *DBRepository) AddWaterBill(r model.BillWater) (err error) {
 }
 
 // AddBillGas inserts bill_gas without overwriting.
-func (d *DBRepository) AddBillGas(r model.BillGas) (err error) {
+func (d *DBRepository) AddGasBill(r model.BillGas) (err error) {
 	bm := r.BillingMonth
 	err = d.Conn.Where("billing_month = ?", bm).Take(&r).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
