@@ -16,17 +16,17 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - TZ=Asia/Tokyo
 
-  bill-manager-water:
-    image: bill-manager-water
-    container_name: bill-manager-water
-    volumes:
-      - ./:/root/fetcher/water/
+  # bill-manager-water:
+  #   image: bill-manager-water
+  #   container_name: bill-manager-water
+  #   volumes:
+  #     - ./:/root/fetcher/water/
 
-  bill-manager-gas:
-    image: bill-manager-gas
-    container_name: bill-manager-gas
-    volumes:
-      - ./:/root/fetcher/gas/
+  # bill-manager-gas:
+  #   image: bill-manager-gas
+  #   container_name: bill-manager-gas
+  #   volumes:
+  #     - ./:/root/fetcher/
 
   # mawinter-client:
   #   image: bill-manager-mawinter
