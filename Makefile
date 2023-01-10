@@ -14,6 +14,7 @@ CONTAINER_NAME_TWITTER=bill-manager-twitter
 CONTAINER_NAME_MAWINTER=bill-manager-mawinter
 CONTAINER_NAME_WATER=bill-manager-water
 CONTAINER_NAME_GAS=bill-manager-gas
+CONTAINER_NAME_API=bill-manager-api
 
 .PHONY: build start clean stop test rebuild
 build:
@@ -22,6 +23,7 @@ build:
 	docker build -t $(CONTAINER_NAME_WATER) -f build/dockerfile-water .
 	docker build -t $(CONTAINER_NAME_MAWINTER) -f build/dockerfile-mawinter .
 	docker build -t $(CONTAINER_NAME_GAS) -f build/dockerfile-gas .
+	docker build -t $(CONTAINER_NAME_API) -f build/dockerfile-api .
 
 start:
 	docker compose -f deployment/compose.yml up -d

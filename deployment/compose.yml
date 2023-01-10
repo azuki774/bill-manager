@@ -16,6 +16,12 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - TZ=Asia/Tokyo
 
+  bill-manager-api:
+    image: bill-manager-api
+    container_name: bill-manager-api
+    ports:
+      - "8080:80"
+
   # bill-manager-water:
   #   image: bill-manager-water
   #   container_name: bill-manager-water
