@@ -19,12 +19,13 @@ type Server struct {
 	APISvc APIService
 }
 
-func addRouting(r *chi.Mux) {
+func (s *Server) addRouting(r *chi.Mux) {
 	r.Route("/", func(r chi.Router) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) { // GET /
 			w.Write([]byte("OK"))
 		})
 	})
+	r.Use(s.middlewareLogging)
 }
 
 func (s *Server) Start(ctx context.Context) (err error) {
@@ -33,7 +34,7 @@ func (s *Server) Start(ctx context.Context) (err error) {
 	addr := fmt.Sprintf(":%s", s.Port)
 
 	r := chi.NewRouter()
-	addRouting(r)
+	s.addRouting(r)
 
 	server := &http.Server{
 		Addr:    addr,
