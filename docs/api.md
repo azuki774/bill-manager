@@ -9,15 +9,15 @@ Health Check用
 ```
 [
     {
-        category_name: "water",
+        bill_name: "water",
         price: 1234,
     },
     {
-        category_name: "elect",
+        bill_name: "elect",
         price: 1234,
     },
         {
-        category_name: "gas",
+        bill_name: "gas",
         price: 123,
     },
 ]
