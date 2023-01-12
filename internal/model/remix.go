@@ -1,14 +1,10 @@
 package model
 
 import (
-	"errors"
 	"strconv"
 	"strings"
 	"time"
 )
-
-var ErrInvalidData = errors.New("invalid data")
-var ErrNotProvided = errors.New("not provided")
 
 type RemixCSV struct {
 	RecordDate       string // YYYY-MM-DD

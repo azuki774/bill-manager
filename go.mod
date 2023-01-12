@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/go-chi/chi v1.5.4
+	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/goark/koyomi v0.6.4
 	github.com/jarcoal/httpmock v1.2.0
 	github.com/spf13/cobra v1.4.0
@@ -13,6 +14,7 @@ require (
 )
 
 require (
+	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/goark/errs v1.1.0 // indirect
 	github.com/goark/fetch v0.3.0 // indirect

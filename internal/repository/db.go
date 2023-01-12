@@ -109,6 +109,9 @@ func (d *DBRepository) AddGasBill(r model.BillGas) (err error) {
 
 func (d *DBRepository) GetBillElect(yyyymm string) (b model.BillElect, err error) {
 	err = d.Conn.Table(model.BillElect{}.TableName()).Where("billing_month = ?", yyyymm).Take(&b).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return model.BillElect{}, model.ErrNotFound
+	}
 	if err != nil {
 		return model.BillElect{}, nil
 	}
@@ -117,6 +120,9 @@ func (d *DBRepository) GetBillElect(yyyymm string) (b model.BillElect, err error
 
 func (d *DBRepository) GetBillGas(yyyymm string) (b model.BillGas, err error) {
 	err = d.Conn.Table(model.BillGas{}.TableName()).Where("billing_month = ?", yyyymm).Take(&b).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return model.BillGas{}, model.ErrNotFound
+	}
 	if err != nil {
 		return model.BillGas{}, nil
 	}
@@ -125,6 +131,9 @@ func (d *DBRepository) GetBillGas(yyyymm string) (b model.BillGas, err error) {
 
 func (d *DBRepository) GetBillWater(yyyymm string) (b model.BillWater, err error) {
 	err = d.Conn.Table(model.BillWater{}.TableName()).Where("billing_month = ?", yyyymm).Take(&b).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return model.BillWater{}, model.ErrNotFound
+	}
 	if err != nil {
 		return model.BillWater{}, nil
 	}
