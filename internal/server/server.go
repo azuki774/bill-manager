@@ -1,6 +1,7 @@
 package server
 
 import (
+	"azuki774/bill-manager/internal/model"
 	"context"
 	"fmt"
 	"net/http"
@@ -12,7 +13,9 @@ import (
 	"go.uber.org/zap"
 )
 
-type APIService interface{}
+type APIService interface {
+	GetBills(ctx context.Context, yyyymm string) (bills []model.BillAPIResponse, err error)
+}
 type Server struct {
 	Port   string
 	Logger *zap.Logger
@@ -20,12 +23,13 @@ type Server struct {
 }
 
 func (s *Server) addRouting(r *chi.Mux) {
+	r.Use(s.middlewareLogging)
 	r.Route("/", func(r chi.Router) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) { // GET /
 			w.Write([]byte("OK"))
 		})
+		r.Get("/{yyyymm}", s.getBillyyyymm)
 	})
-	r.Use(s.middlewareLogging)
 }
 
 func (s *Server) Start(ctx context.Context) (err error) {

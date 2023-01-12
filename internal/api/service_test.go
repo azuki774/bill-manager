@@ -88,6 +88,19 @@ func TestAPIService_GetBills(t *testing.T) {
 			wantBills: []model.BillAPIResponse{},
 			wantErr:   true,
 		},
+		{
+			name: "invalid args",
+			fields: fields{
+				Logger: l,
+				DBRepo: &mockDBRepo{},
+			},
+			args: args{
+				ctx:    context.Background(),
+				yyyymm: "2022",
+			},
+			wantBills: []model.BillAPIResponse{},
+			wantErr:   true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

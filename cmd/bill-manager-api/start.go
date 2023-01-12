@@ -33,13 +33,14 @@ var startCmd = &cobra.Command{
 			fmt.Println(err)
 			return err
 		}
-		// d, err := factory.NewDBRepository(startOpt.DBInfo.Host, startOpt.DBInfo.Port, startOpt.DBInfo.User, startOpt.DBInfo.Pass, startOpt.DBInfo.Name)
-		// if err != nil {
-		// 	fmt.Println(err)
-		// 	return err
-		// }
-		// defer d.CloseDB()
-		s := factory.NewAPIServer(lg, startOpt.Port)
+		d, err := factory.NewDBRepository(startOpt.DBInfo.Host, startOpt.DBInfo.Port, startOpt.DBInfo.User, startOpt.DBInfo.Pass, startOpt.DBInfo.Name)
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+		defer d.CloseDB()
+		ap := factory.NewAPIService(lg, d)
+		s := factory.NewAPIServer(lg, startOpt.Port, ap)
 		return s.Start(ctx)
 	},
 }
