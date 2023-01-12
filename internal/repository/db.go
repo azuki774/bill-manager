@@ -106,3 +106,27 @@ func (d *DBRepository) AddGasBill(r model.BillGas) (err error) {
 
 	return nil
 }
+
+func (d *DBRepository) GetBillElect(yyyymm string) (b model.BillElect, err error) {
+	err = d.Conn.Table(model.BillElect{}.TableName()).Where("billing_month = ?", yyyymm).Take(&b).Error
+	if err != nil {
+		return model.BillElect{}, nil
+	}
+	return b, nil
+}
+
+func (d *DBRepository) GetBillGas(yyyymm string) (b model.BillGas, err error) {
+	err = d.Conn.Table(model.BillGas{}.TableName()).Where("billing_month = ?", yyyymm).Take(&b).Error
+	if err != nil {
+		return model.BillGas{}, nil
+	}
+	return b, nil
+}
+
+func (d *DBRepository) GetBillWater(yyyymm string) (b model.BillWater, err error) {
+	err = d.Conn.Table(model.BillWater{}.TableName()).Where("billing_month = ?", yyyymm).Take(&b).Error
+	if err != nil {
+		return model.BillWater{}, nil
+	}
+	return b, nil
+}
