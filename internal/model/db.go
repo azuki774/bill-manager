@@ -1,6 +1,13 @@
 package model
 
-import "time"
+import (
+	"errors"
+	"time"
+)
+
+var ErrInvalidData = errors.New("invalid data")
+var ErrNotProvided = errors.New("not provided")
+var ErrNotFound = errors.New("record not found")
 
 func (ElectConsumption) TableName() string {
 	return "elect_consumption"

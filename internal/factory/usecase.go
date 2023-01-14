@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"os"
 
+	"azuki774/bill-manager/internal/api"
 	"azuki774/bill-manager/internal/downloader"
 	"azuki774/bill-manager/internal/gas"
 	"azuki774/bill-manager/internal/mawinter"
 	"azuki774/bill-manager/internal/remix"
 	"azuki774/bill-manager/internal/repository"
+	"azuki774/bill-manager/internal/server"
 	"azuki774/bill-manager/internal/water"
 
 	"go.uber.org/zap"
@@ -42,4 +44,12 @@ func NewUsecaseWater(l *zap.Logger, d *repository.DBRepository, f *repository.Fi
 
 func NewUsecaseGas(l *zap.Logger, d *repository.DBRepository, f *repository.FileLoader, date string) (u *gas.GasService) {
 	return &gas.GasService{Logger: l, DBRepository: d, FileLoader: f, Date: date}
+}
+
+func NewAPIService(l *zap.Logger, d *repository.DBRepository) (ap *api.APIService) {
+	return &api.APIService{Logger: l, DBRepo: d}
+}
+
+func NewAPIServer(l *zap.Logger, port string, ap *api.APIService) *server.Server { // TODO
+	return &server.Server{Logger: l, Port: port, APISvc: ap}
 }
