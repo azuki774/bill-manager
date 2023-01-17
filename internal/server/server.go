@@ -28,7 +28,7 @@ func (s *Server) addRouting(r *chi.Mux) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) { // GET /
 			w.Write([]byte("OK"))
 		})
-		r.Get("/{yyyymm}", s.getBillyyyymm)
+		r.Get("/bill/{yyyymm}", s.getBillyyyymm)
 	})
 }
 
