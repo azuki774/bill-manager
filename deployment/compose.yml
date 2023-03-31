@@ -38,14 +38,3 @@ services:
   #   image: bill-manager-mawinter
   #   container_name: bill-manager-mawinter
   #   restart: always
-
-  # twitter-client:
-  #   image: bill-manager-twitter
-  #   container_name: bill-manager-twitter
-  #   env_file:
-  #     - tw-token.env
-  #   environment:
-  #     only_print_debug: 1
-  #     db_host: bill-manager-db
-  #     db_user: root
-  #     db_pass: password
